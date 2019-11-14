@@ -34,6 +34,7 @@ public class ParkController {
     @ApiOperation(value = "添加车场")
     @PostMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result<ParkDTO> add(@Valid @RequestBody BaseRequest<ParkDTO> parkDTO) {
+
         return parkFeignClient.add(parkDTO.getData());
     }
 
