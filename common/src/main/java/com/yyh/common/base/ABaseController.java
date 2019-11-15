@@ -3,15 +3,13 @@ package com.yyh.common.base;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.List;
-import java.util.Map;
 
 public abstract class ABaseController <T extends SuperVO> implements IBaseController<T> {
 
@@ -27,7 +25,7 @@ public abstract class ABaseController <T extends SuperVO> implements IBaseContro
     protected abstract IBaseService<T> getBaseService();
 
     
-	@RequestMapping(value="/queryList",method= RequestMethod.POST, consumes = "application/json;charset=UTF-8", produces = "application/json;charset=UTF-8")
+	@RequestMapping(value="/queryList",method= RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	@Override
 	public Result selectList(@RequestBody BaseRequest<T> param) {
@@ -43,11 +41,10 @@ public abstract class ABaseController <T extends SuperVO> implements IBaseContro
 	}
 
 
-    
-	@RequestMapping(value="/queryById", method=RequestMethod.POST, consumes = "application/json;charset=UTF-8", produces = "application/json;charset=UTF-8")
+	@RequestMapping(value="/queryById", method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	@Override
-	public Result queryById(@RequestBody BaseRequest<T> param) {
+	public Result selectByPrimaryKey(@RequestBody BaseRequest<T> param) {
 		Result result;
 		try{
 			if (param.getData() == null || param.getData().getId() == null) {
@@ -63,7 +60,7 @@ public abstract class ABaseController <T extends SuperVO> implements IBaseContro
 
 
 
-	@RequestMapping(value="/add",method=RequestMethod.POST, consumes = "application/json;charset=UTF-8", produces = "application/json;charset=UTF-8")
+	@RequestMapping(value="/add",method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	@Override
 	public Result addSelective(@RequestBody BaseRequest<T> param) {
@@ -79,7 +76,7 @@ public abstract class ABaseController <T extends SuperVO> implements IBaseContro
 	}
 
 	@SuppressWarnings("unchecked")
-	@RequestMapping(value="/update",method=RequestMethod.POST, consumes = "application/json;charset=UTF-8", produces = "application/json;charset=UTF-8")
+	@RequestMapping(value="/update",method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	@Override
 	public Result updateByPrimaryKeySelective(@RequestBody BaseRequest<T> param) {
@@ -95,7 +92,7 @@ public abstract class ABaseController <T extends SuperVO> implements IBaseContro
 	}
 
 	@SuppressWarnings("unchecked")
-	@RequestMapping(value="/deleteByIdFalse",method=RequestMethod.POST, consumes = "application/json;charset=UTF-8", produces = "application/json;charset=UTF-8")
+	@RequestMapping(value="/deleteByIdFalse",method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	@Override
 	public Result deleteByIdFalse(@RequestBody BaseRequest<T> param) {

@@ -13,15 +13,19 @@ public class ParkDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "车场id", name = "parkId")
-    private Long parkId;
+    @ApiModelProperty(value = "车场id")
+    private Long id;
 
     @NotBlank(message = "车场名称不能为空")
-    @ApiModelProperty(value = "车场名称", name = "parkName")
+    @ApiModelProperty(value = "车场名称")
     private String parkName;
 
+    @NotBlank(message = "车场编号不能为空")
+    @ApiModelProperty(value = "车场编号")
+    private String parkCode;
+
     @NotBlank(message = "地址不能为空")
-    @ApiModelProperty(value = "车场地址", name = "address")
+    @ApiModelProperty(value = "车场地址")
     private String address;
 
 }

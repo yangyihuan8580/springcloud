@@ -1,11 +1,13 @@
 package com.yyh.park.service;
 
-import com.yyh.park.dto.ParkDTO;
+import com.yyh.common.base.IBaseService;
 import com.yyh.park.entity.Park;
 
-public interface ParkService {
+/**
+ * 
+ * <br>
+ * <b>功能：</b>ParkService<br>
+ */
+public interface ParkService extends IBaseService<Park> {
 
-    ParkDTO add(ParkDTO parkDTO);
-
-    Park get(Long parkId);
 }
