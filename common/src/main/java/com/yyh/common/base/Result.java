@@ -25,7 +25,16 @@ public class Result<T> implements Serializable {
 
     private String msg;
 
+    private long total;
+
     private T data;
+
+    public Result(String code, String msg, T data, long total) {
+        this.code = code;
+        this.data = data;
+        this.msg = msg;
+        this.total = total;
+    }
 
     public Result(String code, String msg, T data) {
         this.code = code;
@@ -44,7 +53,15 @@ public class Result<T> implements Serializable {
         return new Result(SUCCESS_CODE, "请求成功", data);
     }
 
-    public static <T> Result success(T data, String msg) {
+    public static <T> Result success(T data, long total, String msg) {
+        return new Result(SUCCESS_CODE, msg, data, total);
+    }
+
+    public static <T> Result success(T data, long total) {
+        return new Result(SUCCESS_CODE, "请求成功", data, total);
+    }
+
+    public static <T> Result success(T data,  String msg) {
         return new Result(SUCCESS_CODE, msg, data);
     }
 
@@ -56,6 +73,9 @@ public class Result<T> implements Serializable {
         return new Result(code, msg, EMPTY_OBJECT);
     }
 
+    public static Result error(String msg) {
+        return new Result(ERROR_CODE, msg, EMPTY_OBJECT);
+    }
 
     public String getCode() {
         return code;
