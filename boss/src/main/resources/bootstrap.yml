@@ -1,0 +1,19 @@
+server:
+  port: 8763
+
+spring:
+  application:
+    name: boss
+  cloud:
+    config:
+      profile: ${spring.profiles.active}
+      label: master
+  profiles:
+    active: dev
+
+
+feign:
+  hystrix:
+    enabled: true
+
+

@@ -5,6 +5,7 @@ import com.yyh.common.base.Result;
 import com.yyh.common.web.ABaseController;
 import com.yyh.common.web.IBaseController;
 import com.yyh.common.web.IBaseService;
+import com.yyh.config.ParkConfiguration;
 import com.yyh.park.dto.ParkDTO;
 import com.yyh.park.entity.Park;
 import com.yyh.park.service.ParkService;
@@ -12,20 +13,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RefreshScope
 @RequestMapping("/park")
 public class ParkController extends ABaseController<Park> implements IBaseController<Park> {
 
     private static final Logger logger = LoggerFactory.getLogger(ParkController.class);
 
-    @Value("${parkName}")
-    private String parkName;
+    @Autowired
+    private ParkConfiguration parkConfiguration;
 
     @Autowired
     private ParkService parkService;
@@ -35,9 +34,8 @@ public class ParkController extends ABaseController<Park> implements IBaseContro
         ParkDTO parkDTO = new ParkDTO();
         Park park = parkService.selectByPrimaryKey(parkId);
         BeanUtils.copyProperties(park, parkDTO);
-        parkDTO.setParkName(parkName);
+        parkDTO.setParkName(parkConfiguration.getParkName());
         Result success = Result.success(parkDTO);
-        logger.info("return:{}", JSON.toJSONString(success));
         return success;
     }
 

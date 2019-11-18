@@ -2,6 +2,7 @@ package com.yyh.park.controller;
 
 import com.yyh.common.base.BaseRequest;
 import com.yyh.common.base.Result;
+import com.yyh.config.BossConfiguration;
 import com.yyh.park.dto.ParkDTO;
 import com.yyh.park.feign.ParkFeignClient;
 import io.swagger.annotations.Api;
@@ -27,6 +28,9 @@ public class ParkController {
     @Autowired
     private ParkFeignClient parkFeignClient;
 
+    @Autowired
+    private BossConfiguration bossConfiguration;
+
     @ApiOperation(value = "查询车场")
     @ApiImplicitParam(name = "parkId", value = "车场id", required = true, dataType = "Long", example = "0")
     @GetMapping(value = "{parkId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -43,6 +47,8 @@ public class ParkController {
 
     @GetMapping(value = "timeout", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result<Object> test() throws InterruptedException {
+        boolean needVerify = bossConfiguration.isNeedVerify();
+        logger.info("needVerify:{}", needVerify);
         Thread.sleep(5000);
         return Result.SUCCESS;
     }

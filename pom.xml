@@ -17,6 +17,7 @@
         <module>boss</module>
         <module>park-service</module>
         <module>common</module>
+        <module>config</module>
     </modules>
 
     <properties>
