@@ -1,6 +1,5 @@
 package com.yyh.fallback;
 
-import com.yyh.common.base.Result;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
