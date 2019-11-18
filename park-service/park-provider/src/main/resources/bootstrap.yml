@@ -5,6 +5,7 @@ spring:
   application:
     name: park-service
   cloud:
+    # config配置
     config:
       discovery:
         enabled: true
