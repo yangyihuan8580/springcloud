@@ -1,4 +1,4 @@
-package com.yyh.park.config;
+package com.yyh.common.config;
 
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;

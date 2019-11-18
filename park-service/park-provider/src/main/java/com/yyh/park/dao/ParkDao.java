@@ -1,7 +1,7 @@
 package com.yyh.park.dao;
 
 
-import com.yyh.common.base.IBaseDao;
+import com.yyh.common.web.IBaseDao;
 import com.yyh.park.entity.Park;
 import org.springframework.stereotype.Repository;
 

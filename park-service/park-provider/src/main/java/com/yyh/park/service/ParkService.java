@@ -1,6 +1,6 @@
 package com.yyh.park.service;
 
-import com.yyh.common.base.IBaseService;
+import com.yyh.common.web.IBaseService;
 import com.yyh.park.entity.Park;
 
 /**

@@ -1,4 +1,4 @@
-package com.yyh.park;
+package com.yyh.park.controller;
 
 import com.yyh.common.base.BaseRequest;
 import com.yyh.common.base.Result;
@@ -7,6 +7,8 @@ import com.yyh.park.feign.ParkFeignClient;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
@@ -19,6 +21,8 @@ import javax.validation.Valid;
 @RequestMapping("/park")
 @Validated
 public class ParkController {
+
+    private static final Logger logger = LoggerFactory.getLogger(ParkController.class);
 
     @Autowired
     private ParkFeignClient parkFeignClient;

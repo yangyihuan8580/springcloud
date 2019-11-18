@@ -1,7 +1,10 @@
 package com.yyh.park.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.yyh.common.base.*;
+import com.yyh.common.base.Result;
+import com.yyh.common.web.ABaseController;
+import com.yyh.common.web.IBaseController;
+import com.yyh.common.web.IBaseService;
 import com.yyh.park.dto.ParkDTO;
 import com.yyh.park.entity.Park;
 import com.yyh.park.service.ParkService;

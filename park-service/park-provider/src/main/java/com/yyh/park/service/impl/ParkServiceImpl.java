@@ -1,7 +1,7 @@
 package com.yyh.park.service.impl;
 
-import com.yyh.common.base.ABaseServiceImpl;
-import com.yyh.common.base.IBaseDao;
+import com.yyh.common.web.ABaseServiceImpl;
+import com.yyh.common.web.IBaseDao;
 import com.yyh.park.dao.ParkDao;
 import com.yyh.park.entity.Park;
 import com.yyh.park.service.ParkService;

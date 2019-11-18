@@ -21,7 +21,7 @@
     <dependencies>
         <dependency>
             <groupId>com.yyh</groupId>
-            <artifactId>common</artifactId>
+            <artifactId>web-common</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
