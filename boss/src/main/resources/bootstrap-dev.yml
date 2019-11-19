@@ -12,7 +12,7 @@ eureka:
     lease-expiration-duration-in-seconds: 10
   client:
     serviceUrl:
-      defaultZone: http://${eureka.instance.hostname}:8761/eureka/
+      defaultZone: http://localhost:8761/eureka/
     # 客户端拉取服务注册信息间隔，单位：秒，缺省：30
     registry-fetch-interval-seconds: 5
     # Eureka服务端连接空闲时的关闭时间，单位：秒，缺省：30
@@ -22,3 +22,9 @@ eureka:
     # 从Eureka服务器读取信息的超时时间，单位：秒，缺省：8
     eureka-server-read-timeout-seconds: 8
 
+executor:
+  poolName: ${spring.application.name}
+  corePoolSize: 5
+  maximumPoolSize: 100
+  keepAliveSeconds: 60
+  queueCapacity: 500

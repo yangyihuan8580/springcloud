@@ -22,3 +22,9 @@ eureka:
     # 从Eureka服务器读取信息的超时时间，单位：秒，缺省：8
     eureka-server-read-timeout-seconds: 8
 
+executor:
+  poolName: ${spring.application.name}
+  corePoolSize: 5
+  maximumPoolSize: 100
+  keepAliveSeconds: 60
+  queueCapacity: 500

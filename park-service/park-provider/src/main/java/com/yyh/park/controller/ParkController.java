@@ -17,6 +17,9 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.ThreadPoolExecutor;
+
 @RestController
 @RequestMapping("/park")
 public class ParkController extends ABaseController<Park> implements IBaseController<Park> {
@@ -29,6 +32,9 @@ public class ParkController extends ABaseController<Park> implements IBaseContro
     @Autowired
     private ParkService parkService;
 
+    @Autowired
+    private Executor executor;
+
     @RequestMapping(value = "{parkId}", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result<ParkDTO> get(@PathVariable("parkId") Long parkId) {
         ParkDTO parkDTO = new ParkDTO();
@@ -36,6 +42,17 @@ public class ParkController extends ABaseController<Park> implements IBaseContro
         BeanUtils.copyProperties(park, parkDTO);
         parkDTO.setParkName(parkConfiguration.getParkName());
         Result success = Result.success(parkDTO);
+        executor.execute(() -> {
+                try {
+                    logger.info("执行任务开始=========");
+                    Thread.sleep(1000);
+                    logger.info("执行任务结束=========");
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        );
+
         return success;
     }
 

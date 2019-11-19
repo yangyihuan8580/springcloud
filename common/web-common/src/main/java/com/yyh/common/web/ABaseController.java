@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.yyh.common.base.BaseRequest;
 import com.yyh.common.base.Result;
 import com.yyh.common.base.SuperVO;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public abstract class ABaseController <T extends SuperVO> implements IBaseContro
 
     protected abstract IBaseService<T> getBaseService();
 
-    
+	@ApiOperation(value = "查询列表")
 	@RequestMapping(value="/queryList",method= RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	@Override
@@ -46,7 +47,7 @@ public abstract class ABaseController <T extends SuperVO> implements IBaseContro
 		return result;
 	}
 
-
+	@ApiOperation(value = "查询单条数据")
 	@RequestMapping(value="/queryById", method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	@Override
@@ -65,7 +66,7 @@ public abstract class ABaseController <T extends SuperVO> implements IBaseContro
 	}
 
 
-
+	@ApiOperation(value = "添加")
 	@RequestMapping(value="/add",method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	@Override
@@ -81,7 +82,7 @@ public abstract class ABaseController <T extends SuperVO> implements IBaseContro
 		return result;
 	}
 
-	@SuppressWarnings("unchecked")
+	@ApiOperation(value = "修改")
 	@RequestMapping(value="/update",method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	@Override
@@ -97,7 +98,7 @@ public abstract class ABaseController <T extends SuperVO> implements IBaseContro
 		return result;
 	}
 
-	@SuppressWarnings("unchecked")
+	@ApiOperation(value = "删除")
 	@RequestMapping(value="/deleteByIdFalse",method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	@Override

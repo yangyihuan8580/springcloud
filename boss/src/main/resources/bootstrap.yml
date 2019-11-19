@@ -15,5 +15,3 @@ spring:
 feign:
   hystrix:
     enabled: true
-
-
