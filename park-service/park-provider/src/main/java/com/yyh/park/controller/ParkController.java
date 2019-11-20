@@ -1,6 +1,7 @@
 package com.yyh.park.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.yyh.cache.cache.service.impl.RedisUtils;
 import com.yyh.common.base.Result;
 import com.yyh.common.web.ABaseController;
 import com.yyh.common.web.IBaseController;
@@ -13,12 +14,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.concurrent.Executor;
-import java.util.concurrent.ThreadPoolExecutor;
 
 @RestController
 @RequestMapping("/park")
@@ -33,12 +33,20 @@ public class ParkController extends ABaseController<Park> implements IBaseContro
     private ParkService parkService;
 
     @Autowired
+    private RedisUtils redisService;
+
+    @Autowired
+    @Qualifier("taskExecutor")
     private Executor executor;
 
     @RequestMapping(value = "{parkId}", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result<ParkDTO> get(@PathVariable("parkId") Long parkId) {
         ParkDTO parkDTO = new ParkDTO();
-        Park park = parkService.selectByPrimaryKey(parkId);
+        Park park = JSON.parseObject(redisService.get(String.valueOf(parkId)).toString(), Park.class);
+        logger.info("redis:{}", JSON.toJSONString(park));
+        if (park != null) {
+            park = parkService.selectByPrimaryKey(parkId);
+        }
         BeanUtils.copyProperties(park, parkDTO);
         parkDTO.setParkName(parkConfiguration.getParkName());
         Result success = Result.success(parkDTO);
@@ -56,10 +64,10 @@ public class ParkController extends ABaseController<Park> implements IBaseContro
         return success;
     }
 
-
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result<Park> add(@RequestBody Park park) {
         parkService.addSelective(park);
+        redisService.set(String.valueOf(park.getId()), JSON.toJSONString(park));
         return Result.success(park);
     }
 

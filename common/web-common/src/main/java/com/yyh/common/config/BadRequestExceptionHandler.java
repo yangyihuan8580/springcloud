@@ -58,4 +58,15 @@ public class BadRequestExceptionHandler {
         return Result.error(Result.ERROR_CODE, "类型转换错误");
     }
 
+    @ExceptionHandler(NumberFormatException.class)
+    public Result numberFormatException(NumberFormatException exception){
+        logger.error(exception.getCause().getLocalizedMessage());
+        return Result.error(Result.ERROR_CODE, "类型转换错误");
+    }
+
+    @ExceptionHandler(Exception.class)
+    public Result allException(Exception exception){
+        logger.error(exception.getCause().getLocalizedMessage());
+        return Result.error(Result.ERROR_CODE, "系统异常，请稍后再试");
+    }
 }

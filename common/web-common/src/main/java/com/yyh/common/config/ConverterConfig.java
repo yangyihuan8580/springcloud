@@ -26,9 +26,16 @@ public class ConverterConfig {
                 new FastJsonHttpMessageConverter();
         //创建FastJson对象并设定序列化规则
         FastJsonConfig fastJsonConfig = new FastJsonConfig();
-        //添加自定义valueFilter
-//        fastJsonConfig.setSerializeFilters(new ZreContextValueFilter());
         fastJsonConfig.setSerializerFeatures(SerializerFeature.PrettyFormat);
+        /*fastJsonConfig.setSerializerFeatures(
+                SerializerFeature.WriteMapNullValue,        // 是否输出值为null的字段,默认为false,我们将它打开
+                SerializerFeature.WriteNullListAsEmpty,     // 将Collection类型字段的字段空值输出为[]
+                SerializerFeature.WriteNullStringAsEmpty,   // 将字符串类型字段的空值输出为空字符串
+                SerializerFeature.WriteNullNumberAsZero,    // 将数值类型字段的空值输出为0
+                SerializerFeature.WriteDateUseDateFormat,
+                SerializerFeature.DisableCircularReferenceDetect    // 禁用循环引用
+        );*/
+        fastJsonHttpMessageConverter.setFastJsonConfig(fastJsonConfig);
         fastJsonHttpMessageConverter.setSupportedMediaTypes(Arrays.asList(MediaType.APPLICATION_JSON_UTF8));
         //规则赋予转换对象
         fastJsonHttpMessageConverter.setFastJsonConfig(fastJsonConfig);
