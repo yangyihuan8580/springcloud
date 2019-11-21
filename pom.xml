@@ -13,7 +13,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>cloud-eureka</module>
+        <module>eureka</module>
         <module>boss</module>
         <module>park-service</module>
         <module>common</module>

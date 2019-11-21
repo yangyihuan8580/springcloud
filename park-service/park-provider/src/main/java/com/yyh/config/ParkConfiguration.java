@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 
 /**
- * 车场配置类
+ * 车场属性配置类，支持动态更新
  */
 @Component
 @RefreshScope

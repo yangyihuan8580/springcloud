@@ -1,7 +1,7 @@
 package com.yyh.park.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.yyh.cache.cache.service.impl.RedisUtils;
+import com.yyh.cache.cache.service.CacheService;
 import com.yyh.common.base.Result;
 import com.yyh.common.web.ABaseController;
 import com.yyh.common.web.IBaseController;
@@ -19,6 +19,8 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.concurrent.Executor;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/park")
@@ -33,7 +35,7 @@ public class ParkController extends ABaseController<Park> implements IBaseContro
     private ParkService parkService;
 
     @Autowired
-    private RedisUtils redisService;
+    private CacheService redisService;
 
     @Autowired
     @Qualifier("taskExecutor")
@@ -42,7 +44,7 @@ public class ParkController extends ABaseController<Park> implements IBaseContro
     @RequestMapping(value = "{parkId}", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result<ParkDTO> get(@PathVariable("parkId") Long parkId) {
         ParkDTO parkDTO = new ParkDTO();
-        Park park = JSON.parseObject(redisService.get(String.valueOf(parkId)).toString(), Park.class);
+        Park park = redisService.get(String.valueOf(parkId));
         logger.info("redis:{}", JSON.toJSONString(park));
         if (park != null) {
             park = parkService.selectByPrimaryKey(parkId);
@@ -67,7 +69,7 @@ public class ParkController extends ABaseController<Park> implements IBaseContro
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result<Park> add(@RequestBody Park park) {
         parkService.addSelective(park);
-        redisService.set(String.valueOf(park.getId()), JSON.toJSONString(park));
+        redisService.set(String.valueOf(park.getId()), park, 10, TimeUnit.SECONDS);
         return Result.success(park);
     }
 
