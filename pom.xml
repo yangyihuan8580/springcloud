@@ -8,23 +8,24 @@
         <version>2.1.3.RELEASE</version>
     </parent>
     <groupId>com.yyh</groupId>
-    <artifactId>springcloud</artifactId>
+    <artifactId>spring-cloud-demo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
-        <module>eureka</module>
-        <module>boss</module>
-        <module>park-service</module>
-        <module>common</module>
-        <module>config</module>
-        <module>gateway</module>
+        <module>cloud-center</module>
+        <module>cloud-common</module>
+        <module>cloud-web</module>
+        <module>cloud-provider</module>
+        <module>cloud-feign</module>
+        <module>cloud-middle</module>
+
     </modules>
 
     <properties>
         <java.version>1.8</java.version>
         <project.version>0.0.1-SNAPSHOT</project.version>
-        <spring-cloud.version>Greenwich.RELEASE</spring-cloud.version>
+        <spring-cloud.version>2.1.0.RELEASE</spring-cloud.version>
     </properties>
 
     <dependencies>
