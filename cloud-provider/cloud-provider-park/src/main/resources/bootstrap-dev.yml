@@ -1,6 +1,5 @@
 spring:
   cloud:
-    # config配置
     config:
       uri: http://localhost:8888/
 
