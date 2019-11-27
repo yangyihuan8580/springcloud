@@ -46,7 +46,7 @@ public class ParkController extends ABaseController<Park> implements IBaseContro
         ParkDTO parkDTO = new ParkDTO();
         Park park = redisService.get(String.valueOf(parkId));
         logger.info("redis:{}", JSON.toJSONString(park));
-        if (park != null) {
+        if (park == null) {
             park = parkService.selectByPrimaryKey(parkId);
         }
         BeanUtils.copyProperties(park, parkDTO);
