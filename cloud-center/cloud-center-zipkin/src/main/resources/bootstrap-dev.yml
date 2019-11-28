@@ -16,3 +16,11 @@ eureka:
     eureka-server-connect-timeout-seconds: 5
     # 从Eureka服务器读取信息的超时时间，单位：秒，缺省：8
     eureka-server-read-timeout-seconds: 8
+
+
+spring:
+  datasource:
+    schema: classpath*:sql/mysql.sql
+    url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=utf8&autoReconnect=true
+    username: root
+    password: 123

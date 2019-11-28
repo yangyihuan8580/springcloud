@@ -9,6 +9,8 @@ spring:
   zipkin:
     base-url: http://zipkin-sever/
     discovery-client-enabled: false
+  sleuth:
+    enabled: false
 
 
 management:
@@ -16,3 +18,7 @@ management:
     web:
       server:
         auto-time-requests: false
+
+zipkin:
+  storage:
+    type: mysql
