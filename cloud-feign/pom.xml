@@ -21,9 +21,15 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-feign</artifactId>
-            <version>1.4.0.RELEASE</version>
+            <version>1.4.5.RELEASE</version>
         </dependency>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+
             <groupId>com.yyh</groupId>
             <artifactId>cloud-common-web</artifactId>
             <version>${project.version}</version>

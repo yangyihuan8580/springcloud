@@ -5,7 +5,7 @@ import com.yyh.park.dto.ParkDTO;
 import com.yyh.park.feign.ParkFeignClient;
 import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 public class ParkFallback implements ParkFeignClient {
 
     @Override

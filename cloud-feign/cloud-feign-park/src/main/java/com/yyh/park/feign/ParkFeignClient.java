@@ -2,14 +2,13 @@ package com.yyh.park.feign;
 
 import com.yyh.common.base.Result;
 import com.yyh.park.dto.ParkDTO;
-import com.yyh.park.feign.fallback.ParkFallback;
-import org.springframework.cloud.netflix.feign.FeignClient;
+import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-@FeignClient(value = "park-provider", fallback = ParkFallback.class)
+@FeignClient(value = "park-provider")
 public interface ParkFeignClient {
 
     @RequestMapping(value = "/park", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,  produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

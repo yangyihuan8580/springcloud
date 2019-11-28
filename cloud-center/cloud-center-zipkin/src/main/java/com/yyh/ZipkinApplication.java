@@ -2,12 +2,14 @@ package com.yyh;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import zipkin2.server.internal.EnableZipkinServer;
 
 @SpringBootApplication
-public class CloudCenterZipkinApplication {
+@EnableZipkinServer
+public class ZipkinApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(CloudCenterZipkinApplication.class, args);
+        SpringApplication.run(ZipkinApplication.class, args);
     }
 
 }
