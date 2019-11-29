@@ -19,6 +19,7 @@ management:
       server:
         auto-time-requests: false
 
+# 设置zipkin使用mysql存储数据
 zipkin:
   storage:
     type: mysql

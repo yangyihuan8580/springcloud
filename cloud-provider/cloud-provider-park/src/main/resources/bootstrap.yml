@@ -16,12 +16,14 @@ spring:
   profiles:
     active: dev
 
+
 mybatis:
-  #映射文件路径
+  # mapper映射文件路径
   mapper-locations: classpath:mapper/*.xml
-  #模型所在的保命
+  # 模型所在的包名
   type-aliases-package: com.yyh.*.entity
 
+# 添加运行状态监控功能 具体查看 https://blog.csdn.net/gingerredjade/article/details/81776192
 management:
   endpoints:
     web:

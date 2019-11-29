@@ -1,17 +1,12 @@
 spring:
-  cloud:
-    # config配置中心的注册地址
-    config:
-      uri: http://localhost:8888/
-  # zipkin-server的地址
-  zipkin:
-    base-url: http://localhost:9411
-  # 监控数据的比率  1 表示全部都监控
-  sleuth:
-    sampler:
-      probability: 1.0
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=UTF-8
+    username: root
+    password: 123
 
-# eureka 客户端配置
+
+
 eureka:
   instance:
     hostname: localhost
@@ -21,7 +16,7 @@ eureka:
     lease-expiration-duration-in-seconds: 10
   client:
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://${eureka.instance.hostname}:8761/eureka/
     # 客户端拉取服务注册信息间隔，单位：秒，缺省：30
     registry-fetch-interval-seconds: 5
     # Eureka服务端连接空闲时的关闭时间，单位：秒，缺省：30
@@ -31,17 +26,3 @@ eureka:
     # 从Eureka服务器读取信息的超时时间，单位：秒，缺省：8
     eureka-server-read-timeout-seconds: 8
 
-
-
-
-#===========================自定义属性(也可以在config配置中心进行配置)================================
-executor:
-  poolName: ${spring.application.name}
-  corePoolSize: 5
-  maximumPoolSize: 100
-  keepAliveSeconds: 60
-  queueCapacity: 500
-
-
-swagger2:
-  enable: true

@@ -1,0 +1,20 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: config
+  profiles:
+    active: dev,jdbc
+  cloud:
+    config:
+      server:
+        jdbc:
+          sql: SELECT `KEY`, `VALUE` from PROPERTIES where APPLICATION=? and PROFILE=? and LABEL=?
+
+# 添加运行状态监控功能 具体查看 https://blog.csdn.net/gingerredjade/article/details/81776192
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh
