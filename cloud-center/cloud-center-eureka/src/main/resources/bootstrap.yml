@@ -18,6 +18,8 @@ eureka:
     # 默认30s. eureka server刷新readCacheMap的时间，注意，client读取的是readCacheMap，
     # 这个时间决定了多久会把readWriteCacheMap的缓存更新到readCacheMap上
     response-cache-update-interval-ms: 3000
+    # 禁用Eureka的ReadOnlyMap缓存 (Eureka端)
+    use-read-only-response-cache: false
   client:
     registerWithEureka: false
     fetchRegistry: false

@@ -48,7 +48,7 @@ public class ParkController {
     @GetMapping(value = "timeout", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result<Object> test() throws InterruptedException {
         boolean needVerify = bossConfiguration.isNeedVerify();
-        String swaggerEnable = bossConfiguration.getSwaggerEnable();
+        boolean swaggerEnable = bossConfiguration.isSwaggerEnable();
         logger.info("needVerify:{}", needVerify);
         logger.info("swaggerEnable:{}", swaggerEnable);
 //        Thread.sleep(5000);

@@ -37,3 +37,9 @@ management:
     web:
       exposure:
         include: refresh,health
+
+
+#tomcat 参数配置
+server:
+  tomcat:
+    accept-count: 100
