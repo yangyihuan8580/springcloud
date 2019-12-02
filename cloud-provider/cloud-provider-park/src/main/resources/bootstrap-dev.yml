@@ -64,6 +64,7 @@ eureka:
     eureka-server-read-timeout-seconds: 8
 
 
+
 #===========================自定义属性(也可以在config配置中心进行配置)================================
 executor:
   poolName: ${spring.application.name}
