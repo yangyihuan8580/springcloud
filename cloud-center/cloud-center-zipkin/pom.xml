@@ -62,6 +62,32 @@
         </dependency>
     </dependencies>
 
+    <!--配置环境的profile-->
+    <profiles>
+        <!--dev默认激活，使用idea Spring Boot 配置启动工程，需要dev的配置-->
+        <profile>
+            <id>dev</id>
+            <properties>
+                <spring.profiles.active>dev</spring.profiles.active>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <spring.profiles.active>test</spring.profiles.active>
+            </properties>
+        </profile>
+        <profile>
+            <id>pro</id>
+            <properties>
+                <spring.profiles.active>pro</spring.profiles.active>
+            </properties>
+        </profile>
+    </profiles>
+
     <build>
         <plugins>
             <plugin>
@@ -69,6 +95,28 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
+        <!-- profile对资源的操作 -->
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>bootstrap*.properties</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <!-- 是否替换@xx@表示的maven properties属性值 -->
+                <filtering>true</filtering>
+                <includes>
+                    <include>bootstrap.yml</include>
+                    <include>application.yml</include>
+                    <include>bootstrap-${spring.profiles.active}.yml</include>
+                    <include>application-${spring.profiles.active}.yml</include>
+                    <include>./config/</include>
+                </includes>
+            </resource>
+        </resources>
+        <finalName>cloud-center-zipkin</finalName>
     </build>
 
 </project>

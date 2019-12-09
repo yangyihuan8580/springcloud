@@ -14,7 +14,7 @@ spring:
       label: master
       name: ${spring.application.name}
   profiles:
-    active: dev
+    active: @spring.profiles.active@
 
 
 mybatis:

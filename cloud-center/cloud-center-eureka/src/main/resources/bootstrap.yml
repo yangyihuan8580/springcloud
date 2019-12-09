@@ -5,7 +5,7 @@ spring:
   application:
     name: cloud-eureka
   profiles:
-    active: dev
+    active: @spring.profiles.active@
 
 logging:
   config: classpath:config/log-config.xml
