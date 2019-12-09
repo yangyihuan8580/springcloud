@@ -6,3 +6,6 @@ spring:
     name: admin
   profiles:
     active: dev
+
+logging:
+  config: classpath:config/log-config.xml
