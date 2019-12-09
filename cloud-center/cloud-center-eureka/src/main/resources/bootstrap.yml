@@ -25,3 +25,10 @@ eureka:
     fetchRegistry: false
 #    serviceUrl:
 #      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+
+
+logging:
+  config: classpath:log-config.xml
+  pattern: aaa
+#  path: /data/logs/${spring.application.name}/
+#  file: ${spring.application.name}.log
