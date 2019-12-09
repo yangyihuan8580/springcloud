@@ -29,9 +29,9 @@ management:
     web:
       exposure:
         include: refresh,health
-    sh
 
-
+logging:
+  config: classpath:config/log-config.xml
 
 
 

@@ -1,6 +1,7 @@
 package com.yyh.park.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.netflix.discovery.DiscoveryManager;
 import com.yyh.cache.cache.service.CacheService;
 import com.yyh.common.base.Result;
 import com.yyh.common.web.ABaseController;
@@ -77,6 +78,7 @@ public class ParkController extends ABaseController<Park> implements IBaseContro
     @RequestMapping(value = "timeout")
     public Result<ParkDTO> timeout() throws InterruptedException {
         Thread.sleep(5000);
+        DiscoveryManager.getInstance().shutdownComponent();
         return Result.SUCCESS;
     }
 

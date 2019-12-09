@@ -1,5 +1,8 @@
 server:
   port: 8763
+  #tomcat 参数配置
+  tomcat:
+    accept-count: 100
 
 spring:
   application:
@@ -38,8 +41,5 @@ management:
       exposure:
         include: refresh,health
 
-
-#tomcat 参数配置
-server:
-  tomcat:
-    accept-count: 100
+logging:
+  config: classpath:config/log-config.xml
