@@ -15,6 +15,7 @@
 
     <modules>
         <module>cloud-middle-redis</module>
+        <module>cloud-middle-elasticsearch</module>
     </modules>
 
 </project>

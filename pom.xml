@@ -19,6 +19,7 @@
         <module>cloud-provider</module>
         <module>cloud-feign</module>
         <module>cloud-middle</module>
+        <module>cloud-entity</module>
 
     </modules>
 
