@@ -14,7 +14,11 @@ spring:
       label: master
       name: ${spring.application.name}
   profiles:
-    active: @spring.profiles.active@
+    #active: @spring.profiles.active@
+    active: test
+    include:
+      - ${spring.profiles.active}-redis
+      - ${spring.profiles.active}-es
 
 
 mybatis:

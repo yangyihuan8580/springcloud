@@ -1,6 +1,4 @@
 spring:
-  include:
-    - pro-redis
   cloud:
     # config配置
     config:

@@ -11,6 +11,7 @@
     <groupId>com.yyh</groupId>
     <artifactId>cloud-entity</artifactId>
     <name>cloud-entity</name>
+    <packaging>pom</packaging>
     <modules>
         <module>cloud-entity-park</module>
     </modules>

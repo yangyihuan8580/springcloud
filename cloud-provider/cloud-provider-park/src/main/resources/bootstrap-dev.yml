@@ -1,7 +1,4 @@
 spring:
-  profiles:
-    include:
-      - dev-redis
   cloud:
     config:
       uri: http://localhost:8888/

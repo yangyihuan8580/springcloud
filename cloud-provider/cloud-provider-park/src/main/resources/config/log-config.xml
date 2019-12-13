@@ -61,7 +61,7 @@
 
 
     <!-- 开发环境. 多个使用逗号隔开. -->
-    <springProfile name="dev">
+    <springProfile name="dev,test">
         <root level="info">
             <appender-ref ref="console"/>
         </root>
@@ -71,7 +71,7 @@
     </springProfile>
 
     <!-- 生产环境,测试环境 (若测试环境和商用环境，日志文件路径不一致 可以使用不同的 appender)-->
-    <springProfile name="pro,test">
+    <springProfile name="pro">
         <root level="info">
             <appender-ref ref="file"/>
         </root>
