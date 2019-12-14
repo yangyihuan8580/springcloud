@@ -6,9 +6,7 @@ import com.yyh.common.base.Result;
 import com.yyh.elastic.park.repository.ParkRecordRepository;
 import com.yyh.park.entity.ParkRecord;
 import lombok.extern.slf4j.Slf4j;
-import org.elasticsearch.index.query.CommonTermsQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryStringQueryBuilder;
+import org.elasticsearch.index.query.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,7 +29,10 @@ public class ParkRecordController {
     @RequestMapping(value = "query", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result<List<ParkRecord>> query(@RequestBody BaseRequest<ParkRecord> req) {
         @Valid ParkRecord data = req.getData();
-        QueryBuilder queryBuilder = new CommonTermsQueryBuilder("plateNumber", data.getPlateNumber());
+
+        QueryBuilder queryBuilder = new TermQueryBuilder("plateNumber", data.getPlateNumber());
+//        QueryBuilder queryBuilder = new CommonTermsQueryBuilder("plateNumber", data.getPlateNumber());
+//        QueryBuilder queryBuilder = new QueryStringQueryBuilder(data.getPlateNumber()).field("plateNumber");
         Iterable<ParkRecord> search = parkRecordRepository.search(queryBuilder);
         return Result.success(search);
     }
