@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static com.yyh.common.excel.account.AccountContext.ACCOUNT_PATH;
+
 public class WechatUtils {
 
     public static String strSub(String s) {
@@ -101,14 +103,14 @@ public class WechatUtils {
 
         /** 写入差异明细 */
         if (CollectionUtils.isNotEmpty(diffAccountModelList)) {
-            EasyExcel.write(new File("C:\\Users\\Administrator\\Desktop\\测试\\T" + terminalId + "微信差异明细.xlsx"))
+            EasyExcel.write(new File(ACCOUNT_PATH + "T" + terminalId + "微信差异明细.xlsx"))
                     .sheet(0, "差异明细")
                     .head(DiffAccountModel.class)
                     .doWrite(diffAccountModelList);
         }
         /** 写入汇总 */
         if (CollectionUtils.isNotEmpty(diffAccountTotalList)) {
-            EasyExcel.write(new File("C:\\Users\\Administrator\\Desktop\\测试T" + terminalId + "微信汇总数据.xlsx"))
+            EasyExcel.write(new File(ACCOUNT_PATH + "T" + terminalId + "微信汇总数据.xlsx"))
                     .sheet(1, "汇总数据")
                     .head(DiffTotalAccountModel.class)
                     .doWrite(diffAccountTotalList);

@@ -13,6 +13,8 @@ import java.util.Map;
 
 public class AccountContext {
 
+    public static final String ACCOUNT_PATH = "C:\\Users\\Administrator\\Desktop\\对账差异\\";
+
     /** 微信明细 key date  key orderCode */
     public static Map<String, Map<String, WechatAccountModel>> wechatAccountModelMap = new HashMap<>();
 
