@@ -1,0 +1,16 @@
+SELECT
+  pay_Time,
+  pay_Code,
+  order_code,
+  need_money,
+  IF(TERMINAL_ID IN (1,2), 1, 3) TERMINAL_ID,
+  d,
+  CASE
+  WHEN pay_type IN (101,103,105,112,114,116,120,124) THEN 1
+  WHEN pay_type IN (102,104,106,113,115,117,121,125) THEN 2
+  ELSE 3 END pay_type
+FROM
+  tob_order
+WHERE pay_time BETWEEN '2019-12-01 00:00:00'
+  AND NOW()
+  AND PAY_TYPE IN( 101,103,105,112,114,116,120,124,102,104,106,113,115,117,121,125)
