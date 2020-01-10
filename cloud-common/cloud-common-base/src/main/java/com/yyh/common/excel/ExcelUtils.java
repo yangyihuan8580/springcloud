@@ -1,14 +1,9 @@
 package com.yyh.common.excel;
 
-import com.alibaba.excel.EasyExcel;
 import com.yyh.common.excel.account.alipay.AlipayUtils;
-import com.yyh.common.excel.account.local.LocalAccountListener;
-import com.yyh.common.excel.account.local.LocalAccountModel;
 import com.yyh.common.excel.account.local.LocalUtils;
 import com.yyh.common.excel.account.wechat.WechatUtils;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -28,8 +23,10 @@ public class ExcelUtils {
 
         Set<String> alipayPath = new HashSet<>();
         alipayPath.add("C:\\Users\\Administrator\\Desktop\\12月微信支付宝对账\\T2支付宝\\20191201_2088521542716393\\20885214551755170156_20191201_账务明细.xlsx");
-        AlipayUtils.batchDiffAlipayAccount(alipayPath);
+        AlipayUtils.batchReadAlipayAccountExcel(alipayPath);
 
+        Thread.sleep(8000);
+        AlipayUtils.diffAlipayAccount(3);
 
     }
 }

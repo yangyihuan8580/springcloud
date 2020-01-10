@@ -29,7 +29,7 @@ public class AlipayUtils {
     public static List<DiffTotalAccountModel> diffAccountTotalList = AccountContext.diffAccountTotalList;
 
 
-    public static void batchDiffAlipayAccount(Set<String> paths) {
+    public static void batchReadAlipayAccountExcel(Set<String> paths) {
         if (CollectionUtils.isNotEmpty(paths)) {
             for (String path : paths) {
                 readAlipayAccountExcel(path);
