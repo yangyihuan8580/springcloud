@@ -6,6 +6,7 @@ import com.yyh.common.base.Result;
 import com.yyh.elastic.park.repository.ParkRecordRepository;
 import com.yyh.park.entity.ParkRecord;
 import lombok.extern.slf4j.Slf4j;
+import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -41,7 +42,13 @@ public class ParkRecordController {
         /** 匹配全部文档 */
 //        queryBuilder = QueryBuilders.matchAllQuery();
         /** 单个匹配，前缀匹配 */
-//        queryBuilder = QueryBuilders.matchQuery("plateNumber", data.getPlateNumber());
+        queryBuilder = QueryBuilders
+                .matchQuery("plateNumber", data.getPlateNumber())
+                /** 设置模糊匹配 */
+                .fuzziness(Fuzziness.AUTO)
+                /** 设置前缀匹配长度 */
+                .prefixLength(3)
+                ;
         /** 单个匹配，前缀匹配 */
 //        queryBuilder = QueryBuilders.multiMatchQuery(data.getPlateNumber(), "plateNumber", "carColor");
         /** 模糊匹配 */
