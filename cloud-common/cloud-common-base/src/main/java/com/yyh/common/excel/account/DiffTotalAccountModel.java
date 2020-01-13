@@ -1,9 +1,7 @@
 package com.yyh.common.excel.account;
 
 import com.alibaba.excel.annotation.ExcelProperty;
-import com.yyh.common.excel.account.local.LocalAccountModel;
 import com.yyh.common.excel.account.local.PayTypeEnum;
-import com.yyh.common.excel.account.wechat.WechatAccountModel;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -32,6 +30,13 @@ public class DiffTotalAccountModel {
     @ExcelProperty(index = 6,value="本地总金额")
     private BigDecimal localTotalMoney;
 
+    @ExcelProperty(index = 7,value="差异笔数")
+    private Integer diffCount;
+
+    @ExcelProperty(index = 8,value="差异金额")
+    private BigDecimal diffMoney;
+
+
 
     public DiffTotalAccountModel (AccountTotalModel localAccountModel, AccountTotalModel thirdAccountModel, PayTypeEnum payTypeEnum, Integer terminalId) {
         this.date = thirdAccountModel.getDate();
@@ -42,6 +47,8 @@ public class DiffTotalAccountModel {
         if (localAccountModel != null) {
             this.localCount = localAccountModel.getCount();
             this.localTotalMoney = localAccountModel.getTotalMoney();
+            this.diffCount = this.thirdCount - this.localCount;
+            this.diffMoney = this.thirdTotalMoney.subtract(this.localTotalMoney);
         }
     }
 }
