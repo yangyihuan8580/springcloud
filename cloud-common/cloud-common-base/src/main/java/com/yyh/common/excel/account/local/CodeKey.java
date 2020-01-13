@@ -24,7 +24,7 @@ public class CodeKey {
         }
         CodeKey key = (CodeKey)o;
         if (key.getOrderCode().equals(this.orderCode)
-                && key.getPayCode().equals(this.payCode)
+                || key.getPayCode().equals(this.payCode)
         ) {
             return true;
         }
@@ -34,7 +34,7 @@ public class CodeKey {
     @Override
     public int hashCode() {
         int result = 17;
-        result = 31 * result + (StringUtils.isEmpty(orderCode) ? 0 : orderCode.hashCode());
+//        result = 31 * result + (StringUtils.isEmpty(orderCode) ? 0 : orderCode.hashCode());
         result = 31 * result + (StringUtils.isEmpty(payCode) ? 0 : payCode.hashCode());
         return result;
     }

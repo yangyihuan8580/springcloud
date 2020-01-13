@@ -9,6 +9,7 @@ import com.yyh.common.excel.account.AccountContext;
 import com.yyh.common.excel.account.AccountTotalModel;
 import org.apache.commons.lang3.StringUtils;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,7 +26,7 @@ public class AlipayAccountListener extends AbstractIgnoreExceptionReadListener<A
 
     @Override
     public void invoke(AlipayAccountModel data, AnalysisContext context) {
-        System.out.println("接收到数据" + JSON.toJSONString(data));
+        //System.out.println("接收到数据" + JSON.toJSONString(data));
         if (data != null) {
             /** 按天分开 */
             String date = DateUtils.format(data.getPayTime(), "yyyy-MM-dd");
@@ -37,8 +38,12 @@ public class AlipayAccountListener extends AbstractIgnoreExceptionReadListener<A
                 }
                 /** 每一天 key : orderCode  value : entity */
                 /** 退款数据 */
-                alipayAccountModelMap.get(date).put(data.getOrderCode(), data);
-                alipayTotalMoneyMap.get(date).add(data.getOrderMoney());
+                if (!data.getOrderMoney().equals(BigDecimal.ZERO)) {
+                    alipayAccountModelMap.get(date).put(data.getOrderCode(), data);
+                    alipayTotalMoneyMap.get(date).add(data.getOrderMoney());
+                } else {
+                    /** 退款订单暂不处理 */
+                }
             }
         }
     }
