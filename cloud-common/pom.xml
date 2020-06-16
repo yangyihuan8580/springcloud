@@ -15,7 +15,7 @@
 
     <modules>
         <!--<module>cloud-common-base</module>-->
-        <module>cloud-common-web</module>
+        <!--<module>cloud-common-web</module>-->
     </modules>
 
 </project>
