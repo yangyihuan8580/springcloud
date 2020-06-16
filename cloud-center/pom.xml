@@ -19,6 +19,7 @@
         <module>cloud-center-gateway</module>
         <module>cloud-center-admin</module>
         <module>cloud-center-zipkin</module>
+        <module>cloud-center-zookeeper</module>
     </modules>
 
     <dependencies>

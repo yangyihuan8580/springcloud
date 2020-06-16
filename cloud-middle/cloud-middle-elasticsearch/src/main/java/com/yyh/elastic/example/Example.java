@@ -10,6 +10,6 @@ public class Example {
 
     public static void main(String[] args) {
         IndexRequest request = new IndexRequest();
-        request.type("parkRecord").id("1111").index()
+        request.type("parkRecord").id("1111").index();
     }
 }

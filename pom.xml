@@ -13,14 +13,13 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>cloud-center</module>
-        <module>cloud-common</module>
-        <module>cloud-web</module>
-        <module>cloud-provider</module>
-        <module>cloud-feign</module>
-        <module>cloud-middle</module>
-        <module>cloud-entity</module>
-
+        <!--<module>cloud-center</module>-->
+        <!--<module>cloud-common</module>-->
+        <!--<module>cloud-web</module>-->
+        <!--<module>cloud-provider</module>-->
+        <!--<module>cloud-feign</module>-->
+        <!--<module>cloud-middle</module>-->
+        <!--<module>cloud-entity</module>-->
     </modules>
 
     <properties>
@@ -44,6 +43,11 @@
                     <artifactId>junit-vintage-engine</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>net.minidev</groupId>
+            <artifactId>json-smart</artifactId>
+            <version>2.3</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
