@@ -14,7 +14,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>cloud-common-base</module>
+        <!--<module>cloud-common-base</module>-->
         <module>cloud-common-web</module>
     </modules>
 
