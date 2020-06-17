@@ -14,12 +14,12 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>cloud-center-config</module>
-        <module>cloud-center-eureka</module>
-        <module>cloud-center-gateway</module>
-        <module>cloud-center-admin</module>
-        <module>cloud-center-zipkin</module>
-        <module>cloud-center-zookeeper</module>
+        <!--<module>cloud-center-config</module>-->
+        <!--<module>cloud-center-eureka</module>-->
+        <!--<module>cloud-center-gateway</module>-->
+        <!--<module>cloud-center-admin</module>-->
+        <!--<module>cloud-center-zipkin</module>-->
+        <!--<module>cloud-center-zookeeper</module>-->
     </modules>
 
     <dependencies>
