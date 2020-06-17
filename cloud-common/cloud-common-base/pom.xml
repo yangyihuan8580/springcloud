@@ -66,6 +66,7 @@
     </dependencies>
 
     <build>
+        <finalName>cloud-common-base</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
