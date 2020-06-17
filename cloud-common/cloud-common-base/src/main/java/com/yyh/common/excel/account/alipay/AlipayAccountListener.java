@@ -36,8 +36,6 @@ public class AlipayAccountListener extends AbstractIgnoreExceptionReadListener<A
                     alipayAccountModelMap.put(date, new HashMap<>());
                     alipayTotalMoneyMap.put(date, new AccountTotalModel(date));
                 }
-                /** 每一天 key : orderCode  value : entity */
-                /** 退款数据 */
                 if (!data.getOrderMoney().equals(BigDecimal.ZERO)) {
                     alipayAccountModelMap.get(date).put(data.getOrderCode(), data);
                     alipayTotalMoneyMap.get(date).add(data.getOrderMoney());
@@ -52,7 +50,6 @@ public class AlipayAccountListener extends AbstractIgnoreExceptionReadListener<A
     public void doAfterAllAnalysed(AnalysisContext context) {
         System.out.println("支付宝汇总统计" + JSON.toJSONString(alipayTotalMoneyMap));
         System.out.println("支付宝统计完毕");
-
     }
 
 }
