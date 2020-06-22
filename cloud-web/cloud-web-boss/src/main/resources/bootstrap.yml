@@ -1,0 +1,45 @@
+server:
+  port: 8763
+  #tomcat 参数配置
+  tomcat:
+    accept-count: 100
+
+spring:
+  application:
+    name: boss
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: config
+      profile: ${spring.profiles.active}
+      label: master
+      name: ${spring.application.name}
+  profiles:
+    active: dev
+
+# 远程调用启动熔断器
+feign:
+  hystrix:
+    enabled: true
+
+# hystrix 信号量隔离，3秒后自动超时
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          strategy: SEMAPHORE
+          thread:
+            timeoutInMilliseconds: 3000
+
+
+# 添加运行状态监控功能 具体查看 https://blog.csdn.net/gingerredjade/article/details/81776192
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh,health
+
+logging:
+  config: classpath:config/log-config.xml

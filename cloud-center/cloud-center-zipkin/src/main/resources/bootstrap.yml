@@ -1,0 +1,28 @@
+server:
+  port: 9411
+
+spring:
+  application:
+    name: zipkin-server
+  profiles:
+    active: dev
+  zipkin:
+    base-url: http://zipkin-sever/
+    discovery-client-enabled: false
+  sleuth:
+    enabled: false
+
+
+management:
+  metrics:
+    web:
+      server:
+        auto-time-requests: false
+
+# 设置zipkin使用mysql存储数据
+zipkin:
+  storage:
+    type: mysql
+
+logging:
+  config: classpath:config/log-config.xml

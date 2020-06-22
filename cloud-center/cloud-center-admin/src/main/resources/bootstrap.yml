@@ -1,0 +1,11 @@
+server:
+  port: 8899
+
+spring:
+  application:
+    name: admin
+  profiles:
+    active: dev
+
+logging:
+  config: classpath:config/log-config.xml

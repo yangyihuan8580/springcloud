@@ -1,0 +1,28 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=UTF-8
+    username: root
+    password: 123
+
+
+
+eureka:
+  instance:
+    hostname: localhost
+    # 设置心跳的时间间隔（默认是30秒）
+    lease-renewal-interval-in-seconds: 5
+    # 续约到期时间（默认90秒）
+    lease-expiration-duration-in-seconds: 10
+  client:
+    serviceUrl:
+      defaultZone: http://47.105.193.7:8761/eureka/
+    # 客户端拉取服务注册信息间隔，单位：秒，缺省：30
+    registry-fetch-interval-seconds: 5
+    # Eureka服务端连接空闲时的关闭时间，单位：秒，缺省：30
+    eureka-connection-idle-timeout-seconds: 30
+    # 连接Eureka服务器的超时时间，单位：秒，缺省：5
+    eureka-server-connect-timeout-seconds: 5
+    # 从Eureka服务器读取信息的超时时间，单位：秒，缺省：8
+    eureka-server-read-timeout-seconds: 8
+
