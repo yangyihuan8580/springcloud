@@ -15,6 +15,7 @@
 
     <modules>
         <module>cloud-provider-park</module>
+        <module>cloud-provider-user</module>
     </modules>
 
     <dependencies>

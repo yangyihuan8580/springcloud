@@ -1,0 +1,42 @@
+server:
+  port: 8762
+
+spring:
+  application:
+    name: park-provider
+  cloud:
+    # config配置   刷新配置 路径 http://localhost:8762/actuator/refresh
+    config:
+      discovery:
+        enabled: true
+        service-id: config
+      profile: ${spring.profiles.active}
+      label: master
+      name: ${spring.application.name}
+  profiles:
+    #active: @spring.profiles.active@
+    active: test
+    include:
+      - ${spring.profiles.active}-redis
+      - ${spring.profiles.active}-es
+
+
+mybatis:
+  # mapper映射文件路径
+  mapper-locations: classpath:mapper/*.xml
+  # 模型所在的包名
+  type-aliases-package: com.yyh.*.entity
+
+# 添加运行状态监控功能 具体查看 https://blog.csdn.net/gingerredjade/article/details/81776192
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh,health
+
+logging:
+  config: classpath:config/log-config.xml
+
+
+
+
