@@ -15,7 +15,7 @@
               value="%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger - %msg%n" />
 
 
-    <property name="LOG_PREFIX" value="/data/logs/eureka/"/>
+    <property name="LOG_PREFIX" value="/data/logs/${spring.application.name}/"/>
 
     <!-- %m输出的信息,%p日志级别,%t线程名,%d日期,%c类的全名,%i索引【从数字0开始递增】,,, -->
     <!-- appender是configuration的子节点，是负责写日志的组件。 -->
