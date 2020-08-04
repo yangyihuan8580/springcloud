@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
+    <!-- 读取spring.application.name中的属性来生成日志文件名 -->
+    <springProperty scope="context" name="logName" source="spring.application.name" defaultValue="localhost.log"/>
+
+
     <!-- 彩色日志依赖的渲染类 -->
        <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
     <conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter" />
@@ -15,7 +19,7 @@
               value="%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger - %msg%n" />
 
 
-    <property name="LOG_PREFIX" value="/data/logs/${spring.application.name}/"/>
+    <property name="LOG_PREFIX" value="/data/logs/${logName}/"/>
 
     <!-- %m输出的信息,%p日志级别,%t线程名,%d日期,%c类的全名,%i索引【从数字0开始递增】,,, -->
     <!-- appender是configuration的子节点，是负责写日志的组件。 -->
