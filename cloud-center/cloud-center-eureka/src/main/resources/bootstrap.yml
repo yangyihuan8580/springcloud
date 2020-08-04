@@ -3,9 +3,9 @@ server:
 
 spring:
   application:
-    name: cloud-eureka
+    name: eureka
   profiles:
     active: @spring.profiles.active@
 
 logging:
-  config: classpath:config/log-config.xml
+  config: classpath:log-config.xml

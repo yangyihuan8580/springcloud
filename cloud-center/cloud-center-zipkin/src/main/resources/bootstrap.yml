@@ -25,4 +25,4 @@ zipkin:
     type: mysql
 
 logging:
-  config: classpath:config/log-config.xml
+  config: classpath:log-config.xml

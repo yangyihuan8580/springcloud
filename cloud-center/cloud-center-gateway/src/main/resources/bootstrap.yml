@@ -40,4 +40,4 @@ spring:
             fallbackUri: forward:/error/defaultfallback
 
 logging:
-  config: classpath:config/log-config.xml
+  config: classpath:log-config.xml

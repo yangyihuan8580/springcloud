@@ -103,6 +103,14 @@
                     <exclude>bootstrap*.properties</exclude>
                 </excludes>
             </resource>
+            <!-- 引入日志配置文件 -->
+            <resource>
+                <directory>../../cloud-common/cloud-common-base/src/main/resources/config</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>log-config.xml</include>
+                </includes>
+            </resource>
             <resource>
                 <directory>src/main/resources</directory>
                 <!-- 是否替换@xx@表示的maven properties属性值 -->
@@ -112,7 +120,6 @@
                     <include>application.yml</include>
                     <include>bootstrap-${spring.profiles.active}.yml</include>
                     <include>application-${spring.profiles.active}.yml</include>
-                    <include>./config/</include>
                 </includes>
             </resource>
         </resources>

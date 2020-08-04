@@ -20,4 +20,4 @@ management:
         include: refresh, health
 
 logging:
-  config: classpath:config/log-config.xml
+  config: classpath:log-config.xml

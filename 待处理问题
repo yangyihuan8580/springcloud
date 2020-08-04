@@ -6,3 +6,6 @@
 
 
 3.sleuth 整合 ELK
+
+
+4.log-config.xml 如何使用bootstrap.yml中定义的属性

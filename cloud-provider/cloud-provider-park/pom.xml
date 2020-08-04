@@ -111,7 +111,14 @@
                     <include>bootstrap-${spring.profiles.active}.yml</include>
                     <include>application-${spring.profiles.active}*.yml</include>
                     <include>bootstrap-${spring.profiles.active}*.yml</include>
-                    <include>config/*</include>
+                </includes>
+            </resource>
+            <!-- 引入日志配置文件 -->
+            <resource>
+                <directory>../../cloud-common/cloud-common-base/src/main/resources/config</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>log-config.xml</include>
                 </includes>
             </resource>
             <resource>
@@ -120,14 +127,6 @@
                 <filtering>true</filtering>
                 <includes>
                     <include>application-${spring.profiles.active}-redis.yml</include>
-                </includes>
-            </resource>
-            <resource>
-                <directory>../../cloud-middle/cloud-middle-elasticsearch/src/main/resources</directory>
-                <!-- 是否替换@xx@表示的maven properties属性值 -->
-                <filtering>true</filtering>
-                <includes>
-                    <include>application-${spring.profiles.active}-es.yml</include>
                 </includes>
             </resource>
         </resources>
