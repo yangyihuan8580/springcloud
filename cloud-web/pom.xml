@@ -15,6 +15,10 @@
 
     <modules>
         <module>cloud-web-boss</module>
+        <module>cloud-web-openapi</module>
+        <module>cloud-web-wechat</module>
+        <module>cloud-web-alipay</module>
+        <module>cloud-web-cps</module>
     </modules>
 
     <dependencies>
