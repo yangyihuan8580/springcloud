@@ -1,5 +1,0 @@
-spring:
-  data:
-    elasticsearch:
-      cluster-name: my-application
-      cluster-nodes: 47.105.193.7:9200

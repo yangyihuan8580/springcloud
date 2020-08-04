@@ -20,16 +20,6 @@
         </dependency>
         <dependency>
             <groupId>com.yyh</groupId>
-            <artifactId>cloud-entity-park</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.yyh</groupId>
-            <artifactId>cloud-middle-elasticsearch</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.yyh</groupId>
             <artifactId>cloud-middle-redis</artifactId>
             <version>${project.version}</version>
         </dependency>
