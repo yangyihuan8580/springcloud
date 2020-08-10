@@ -69,9 +69,9 @@
         <root level="info">
             <appender-ref ref="console"/>
         </root>
-        <logger name="com.yyh" level="debug">
-            <appender-ref ref="console"/>
-        </logger>
+        <!--<logger name="com.yyh" level="debug">-->
+            <!--<appender-ref ref="console"/>-->
+        <!--</logger>-->
     </springProfile>
 
     <!-- 生产环境,测试环境 (若测试环境和商用环境，日志文件路径不一致 可以使用不同的 appender)-->

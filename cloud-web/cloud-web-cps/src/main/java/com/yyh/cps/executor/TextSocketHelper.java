@@ -68,7 +68,13 @@ public class TextSocketHelper {
                     setResult(tcpMessage, result);
                     return;
                 }
-                TcpResult tcpResult = tcpMessageService.execute(uploadMessage);
+                TcpResult tcpResult;
+                try {
+                    tcpResult = tcpMessageService.execute(uploadMessage);
+                } catch (Exception e) {
+                    logger.info("消息处理异常:" + e.getMessage(), e);
+                    tcpResult = TcpResult.error(uploadMessage.getCode(), uploadMessage.getMsgId());
+                }
                 String result;
                 if (tcpResult != null) {
                     result = tcpResult.toString();

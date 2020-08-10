@@ -7,6 +7,7 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 
 
 @Data
@@ -21,7 +22,12 @@ public class TcpMessage {
 
     public UploadMessage parseData() {
         UploadMessage uploadMessage = JSON.parseObject(message,new TypeReference<UploadMessage<?>>() {});
-        uploadMessage.setParkId(parkId);
+        if (StringUtils.isNotEmpty(parkId)) {
+            uploadMessage.setParkId(parkId);
+        }
+        if (ctx != null) {
+            uploadMessage.setCtx(ctx);
+        }
         return uploadMessage;
     }
 }
