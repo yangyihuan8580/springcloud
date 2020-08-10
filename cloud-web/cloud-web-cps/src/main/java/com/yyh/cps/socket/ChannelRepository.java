@@ -75,6 +75,14 @@ public class ChannelRepository {
         /**  车场状态变更以及后续操作处理  */
     }
 
+    /** 通道信息更新 */
+    public void updateChannelInfo(Channel channel) {
+        if (channel == null) {
+            return;
+        }
+
+    }
+
     public void closeChannel(Channel channel) {
         if (channel == null) {
             return;

@@ -9,6 +9,7 @@ import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -17,7 +18,7 @@ import org.slf4j.LoggerFactory;
  */
 public class HeartbeatHandler extends ChannelHandlerAdapter {
 
-    private static org.slf4j.Logger logger = LoggerFactory.getLogger(HeartbeatHandler.class.getSimpleName());
+    private static Logger logger = LoggerFactory.getLogger(HeartbeatHandler.class.getSimpleName());
 
 	public void userEventTriggered(ChannelHandlerContext ctx, Object evt)
 			throws Exception {
