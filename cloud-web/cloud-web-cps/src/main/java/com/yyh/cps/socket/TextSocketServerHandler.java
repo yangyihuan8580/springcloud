@@ -1,24 +1,18 @@
 package com.yyh.cps.socket;
 
-import com.alibaba.fastjson.JSON;
 import com.yyh.common.context.SpringContextUtils;
 import com.yyh.cps.executor.TcpMessage;
-import com.yyh.cps.executor.TcpMessageService;
 import com.yyh.cps.executor.TextSocketHelper;
 import io.netty.channel.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 @ChannelHandler.Sharable
-@Component
 public class TextSocketServerHandler extends SimpleChannelInboundHandler {
 
     private static Logger logger = LoggerFactory.getLogger(HeartbeatHandler.class.getSimpleName());
 
-    @Autowired
     private TextSocketHelper textSocketHelper;
 
     public TextSocketServerHandler(ServerConfig config) {

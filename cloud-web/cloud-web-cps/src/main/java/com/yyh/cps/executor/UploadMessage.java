@@ -1,7 +1,5 @@
 package com.yyh.cps.executor;
 
-import com.alibaba.fastjson.JSON;
-import com.yyh.cps.constant.CpsApiConstant;
 import io.netty.channel.ChannelHandlerContext;
 import lombok.Data;
 

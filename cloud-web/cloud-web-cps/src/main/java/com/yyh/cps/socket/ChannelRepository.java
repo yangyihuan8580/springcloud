@@ -1,11 +1,15 @@
 package com.yyh.cps.socket;
 
 
+import com.yyh.cache.cache.constant.CacheKeyPrefix;
+import com.yyh.cache.cache.service.CacheService;
+import com.yyh.common.context.SpringContextUtils;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelId;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
 public class ChannelRepository {
 
@@ -16,6 +20,8 @@ public class ChannelRepository {
     private ConcurrentHashMap<ChannelId,String> channelId2parkIdMap = new ConcurrentHashMap();
 
     private ConcurrentHashMap<ChannelId,Channel> channelMap = new ConcurrentHashMap();
+
+    private CacheService cacheService;
 
     private ChannelRepository() {
 
@@ -32,6 +38,12 @@ public class ChannelRepository {
     }
 
 
+    private CacheService getCacheService() {
+        if (cacheService == null) {
+            cacheService = SpringContextUtils.getBean(CacheService.class);
+        }
+        return cacheService;
+    }
 
     public ChannelId getChannelId(String parkId) {
         if (StringUtils.isNotEmpty(parkId)) {
@@ -71,16 +83,17 @@ public class ChannelRepository {
         parkId2channelIdMap.put(parkId, channel.id());
         channelId2parkIdMap.put(channel.id(), parkId);
         /** 放入redis */
+        cacheService.set(CacheKeyPrefix.CHANNEL_PARK.getPrefix() + parkId, channel.id().asLongText(), CacheKeyPrefix.CHANNEL_PARK.getTime(), TimeUnit.SECONDS);
 
         /**  车场状态变更以及后续操作处理  */
     }
 
     /** 通道信息更新 */
-    public void updateChannelInfo(Channel channel) {
-        if (channel == null) {
+    public void updateChannelInfo(Channel channel, String parkId) {
+        if (channel == null || StringUtils.isEmpty(parkId)) {
             return;
         }
-
+        cacheService.expire(CacheKeyPrefix.CHANNEL_PARK.getPrefix() + parkId, CacheKeyPrefix.CHANNEL_PARK.getTime(), TimeUnit.SECONDS);
     }
 
     public void closeChannel(Channel channel) {
@@ -94,6 +107,7 @@ public class ChannelRepository {
             parkId2channelIdMap.remove(parkId);
         }
         /** 清除redis */
+        cacheService.del(CacheKeyPrefix.CHANNEL_PARK.getPrefix() + parkId);
 
         /**  车场状态变更以及后续操作处理  */
     }

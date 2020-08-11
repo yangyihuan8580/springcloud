@@ -1,5 +1,6 @@
 package com.yyh.cache.cache.service;
 
+import java.sql.Time;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -14,6 +15,15 @@ public interface CacheService {
      * @return
      */
     boolean expire(String key, long time);
+
+    /**
+     * 指定缓存失效时间
+     * @param key 键
+     * @param time 时间(秒)
+     * @param timeUnit 时间单位
+     * @return
+     */
+    boolean expire(String key, long time, TimeUnit timeUnit);
 
     /**
      * 根据key 获取过期时间
@@ -58,6 +68,25 @@ public interface CacheService {
      * @return true成功 false 失败
      */
     boolean set(String key, Object value, long time);
+
+    /**
+     * 锁缓存放入并设置时间
+     * @param key 键
+     * @param value 值
+     * @param time 时间(秒) time要大于0 如果time小于等于0 将设置无限期
+     * @return true成功 false 失败
+     */
+    boolean setNx(String key, Object value, long time);
+
+    /**
+     * 锁缓存放入并设置时间
+     * @param key 键
+     * @param value 值
+     * @param time 时间(秒) time要大于0 如果time小于等于0 将设置无限期
+     * @param timeUnit 时间单位
+     * @return true成功 false 失败
+     */
+    boolean setNx(String key, Object value, long time, TimeUnit timeUnit);
 
     /**
      * 普通缓存放入并设置时间

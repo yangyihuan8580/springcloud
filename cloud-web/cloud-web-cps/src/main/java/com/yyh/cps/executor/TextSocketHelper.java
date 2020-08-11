@@ -1,11 +1,13 @@
 package com.yyh.cps.executor;
 
-import com.alibaba.fastjson.JSON;
-import com.yyh.common.base.Result;
+import com.yyh.cache.cache.service.CacheService;
 import com.yyh.common.context.SpringContextUtils;
 import com.yyh.cps.constant.CpsApiConstant;
 import com.yyh.cps.constant.CpsResultCodeEnum;
+import com.yyh.cps.executor.future.FutureRepository;
+import com.yyh.cps.executor.future.SyncWriteFuture;
 import com.yyh.cps.executor.request.RequestMapping;
+import com.yyh.cps.mq.MqService;
 import com.yyh.cps.socket.ChannelRepository;
 import com.yyh.cps.socket.ServerConfig;
 import io.netty.channel.Channel;
@@ -28,6 +30,12 @@ public class TextSocketHelper {
     @Autowired
     private ServerConfig serverConfig;
 
+    @Autowired
+    private CacheService cacheService;
+
+    @Autowired
+    private MqService mqService;
+
     public void process(final TcpMessage tcpMessage) {
         logger.info("消息放入业务池中message:{},parkId:{}", tcpMessage.getMessage(), tcpMessage.getParkId());
         executor.execute(new Runnable() {
@@ -43,6 +51,12 @@ public class TextSocketHelper {
                     setResult(tcpMessage, result);
                     return;
                 }
+                long time = 2L;
+                boolean success = cacheService.setNx(uploadMessage.getMsgId(), System.currentTimeMillis(), time);
+                if (!success) {
+                    logger.info("{}秒,接收到重复数据，数据丢弃", time);
+                    return;
+                }
                 /**  判断车场是否注册 */
                 if (!uploadMessage.getCode().equals(CpsApiConstant.CPS_001)) {
                     Channel channel = ChannelRepository.getInstance().getChannel(tcpMessage.getParkId());
@@ -53,7 +67,7 @@ public class TextSocketHelper {
                         return;
                     } else {
                         /** 更新车场token信息 */
-                        ChannelRepository.getInstance().updateChannelInfo(channel);
+                        ChannelRepository.getInstance().updateChannelInfo(channel, uploadMessage.getParkId());
                     }
                 }
                 Class<?> tcpMessageServiceClass = RequestMapping.getClassByCode(uploadMessage.getCode());
@@ -64,8 +78,7 @@ public class TextSocketHelper {
                 }
                 TcpMessageService tcpMessageService = (TcpMessageService) SpringContextUtils.getBean(tcpMessageServiceClass);
                 if (tcpMessageService == null) {
-                    String result = TcpResult.result(CpsResultCodeEnum.CODE_ERROR, uploadMessage.getCode(), uploadMessage.getMsgId()).toString();
-                    setResult(tcpMessage, result);
+                    callback(uploadMessage);
                     return;
                 }
                 TcpResult tcpResult;
@@ -86,6 +99,15 @@ public class TextSocketHelper {
                 }
             }
         });
+    }
+
+    private void callback(UploadMessage uploadMessage) {
+        SyncWriteFuture syncWriteFuture = FutureRepository.futureMap.get(uploadMessage.getMsgId());
+        if (syncWriteFuture != null) {
+            syncWriteFuture.setResponse(uploadMessage.getData());
+        } else {
+//            mqService.sendMsg()
+        }
     }
 
     private void setResult(TcpMessage tcpMessage, String s) {
