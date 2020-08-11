@@ -49,8 +49,6 @@ public class TextSocketServerHandler extends SimpleChannelInboundHandler {
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         logger.info("channelInactive::接收到客户端的断开信息================");
         Channel channel = ctx.channel();
-        String parkId = ChannelRepository.getInstance().getParkId(channel.id());
-        logger.info("channelInactive::接收到客户端的车场Id：{}", parkId);
         ChannelRepository.getInstance().closeChannel(channel);
         super.channelInactive(ctx);
     }

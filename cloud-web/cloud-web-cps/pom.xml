@@ -88,6 +88,14 @@
 				</includes>
 			</resource>
 			<resource>
+				<directory>../../cloud-middle/cloud-middle-redis/src/main/resources</directory>
+				<!-- 是否替换@xx@表示的maven properties属性值 -->
+				<filtering>true</filtering>
+				<includes>
+					<include>application-${spring.profiles.active}-redis.yml</include>
+				</includes>
+			</resource>
+			<resource>
 				<directory>src/main/resources</directory>
 				<!-- 是否替换@xx@表示的maven properties属性值 -->
 				<filtering>true</filtering>

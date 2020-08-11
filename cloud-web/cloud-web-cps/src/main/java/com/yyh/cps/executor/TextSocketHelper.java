@@ -42,67 +42,73 @@ public class TextSocketHelper {
 
             @Override
             public void run() {
-                logger.info("开始处理tcp消息,message:{},parkId:{}", tcpMessage.getMessage(), tcpMessage.getParkId());
-                UploadMessage uploadMessage = tcpMessage.parseData();
-                boolean checked = checkMessage(uploadMessage);
-                if (!checked) {
-                    logger.info("==========报文格式错误=======");
-                    String result = TcpResult.result(CpsResultCodeEnum.PARAM_ERROR, uploadMessage.getCode(), uploadMessage.getMsgId()).toString();
-                    setResult(tcpMessage, result);
-                    return;
-                }
-                long time = 2L;
-                boolean success = cacheService.setNx(uploadMessage.getMsgId(), System.currentTimeMillis(), time);
-                if (!success) {
-                    logger.info("{}秒,接收到重复数据，数据丢弃", time);
-                    return;
-                }
-                /**  判断车场是否注册 */
-                if (!uploadMessage.getCode().equals(CpsApiConstant.CPS_001)) {
-                    Channel channel = ChannelRepository.getInstance().getChannel(tcpMessage.getParkId());
-                    if (channel == null) {
-                        logger.info("==========车场未注册=======");
-                        String result = TcpResult.result(CpsResultCodeEnum.UNREGISTERED, uploadMessage.getCode(), uploadMessage.getMsgId()).toString();
+                try {
+                    logger.info("开始处理tcp消息,message:{},parkId:{}", tcpMessage.getMessage(), tcpMessage.getParkId());
+                    UploadMessage uploadMessage = tcpMessage.parseData();
+                    boolean checked = checkMessage(uploadMessage);
+                    if (!checked) {
+                        logger.info("==========报文格式错误=======");
+                        String result = TcpResult.result(CpsResultCodeEnum.PARAM_ERROR, uploadMessage.getCode(), uploadMessage.getMsgId()).toString();
                         setResult(tcpMessage, result);
                         return;
-                    } else {
-                        /** 更新车场token信息 */
-                        ChannelRepository.getInstance().updateChannelInfo(channel, uploadMessage.getParkId());
                     }
-                }
-                Class<?> tcpMessageServiceClass = RequestMapping.getClassByCode(uploadMessage.getCode());
-                if (tcpMessageServiceClass == null) {
-                    String result = TcpResult.result(CpsResultCodeEnum.CODE_ERROR, uploadMessage.getCode(), uploadMessage.getMsgId()).toString();
-                    setResult(tcpMessage, result);
-                    return;
-                }
-                TcpMessageService tcpMessageService = (TcpMessageService) SpringContextUtils.getBean(tcpMessageServiceClass);
-                if (tcpMessageService == null) {
-                    callback(uploadMessage);
-                    return;
-                }
-                TcpResult tcpResult;
-                try {
-                    tcpResult = tcpMessageService.execute(uploadMessage);
+                    long time = 2L;
+                    boolean success = cacheService.setNx(uploadMessage.getMsgId(), System.currentTimeMillis(), time);
+                    if (!success) {
+                        logger.info("{}秒,接收到重复数据，数据丢弃", time);
+                        return;
+                    }
+                    /**  判断车场是否注册 */
+                    if (!uploadMessage.getCode().equals(CpsApiConstant.CPS_001)) {
+                        Channel channel = ChannelRepository.getInstance().getChannel(tcpMessage.getParkId());
+                        if (channel == null) {
+                            logger.info("==========车场未注册=======");
+                            String result = TcpResult.result(CpsResultCodeEnum.UNREGISTERED, uploadMessage.getCode(), uploadMessage.getMsgId()).toString();
+                            setResult(tcpMessage, result);
+                            return;
+                        } else {
+                            /** 更新车场token信息 */
+                            ChannelRepository.getInstance().updateChannelInfo(channel, uploadMessage.getParkId());
+                        }
+                    }
+                    Class<?> tcpMessageServiceClass = RequestMapping.getClassByCode(uploadMessage.getCode());
+                    if (tcpMessageServiceClass == null) {
+                        String result = TcpResult.result(CpsResultCodeEnum.CODE_ERROR, uploadMessage.getCode(), uploadMessage.getMsgId()).toString();
+                        setResult(tcpMessage, result);
+                        return;
+                    }
+                    TcpMessageService tcpMessageService = (TcpMessageService) SpringContextUtils.getBean(tcpMessageServiceClass);
+                    if (tcpMessageService == null) {
+                        callback(uploadMessage);
+                        return;
+                    }
+                    TcpResult tcpResult;
+                    try {
+                        tcpResult = tcpMessageService.execute(uploadMessage);
+                    } catch (Exception e) {
+                        logger.info("消息处理异常:" + e.getMessage(), e);
+                        tcpResult = TcpResult.error(uploadMessage.getCode(), uploadMessage.getMsgId());
+                    }
+                    String result;
+                    if (tcpResult != null) {
+                        result = tcpResult.toString();
+                    } else {
+                        result = TcpResult.success(uploadMessage.getCode(), uploadMessage.getMsgId()).toString();
+                    }
+                    if (tcpResult != null) {
+                        setResult(tcpMessage, result);
+                    }
                 } catch (Exception e) {
-                    logger.info("消息处理异常:" + e.getMessage(), e);
-                    tcpResult = TcpResult.error(uploadMessage.getCode(), uploadMessage.getMsgId());
+                    logger.error("tcp上行消息处理异常:"+ e.getMessage(), e);
                 }
-                String result;
-                if (tcpResult != null) {
-                    result = tcpResult.toString();
-                } else {
-                    result = TcpResult.success(uploadMessage.getCode(), uploadMessage.getMsgId()).toString();
-                }
-                if (tcpResult != null) {
-                    setResult(tcpMessage, result);
-                }
+
             }
         });
     }
 
     private void callback(UploadMessage uploadMessage) {
         SyncWriteFuture syncWriteFuture = FutureRepository.futureMap.get(uploadMessage.getMsgId());
+        logger.info("syncWriteFuture :"+ syncWriteFuture);
         if (syncWriteFuture != null) {
             syncWriteFuture.setResponse(uploadMessage.getData());
         } else {

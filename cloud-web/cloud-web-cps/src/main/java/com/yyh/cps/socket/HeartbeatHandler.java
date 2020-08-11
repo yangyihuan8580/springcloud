@@ -25,12 +25,14 @@ public class HeartbeatHandler extends ChannelHandlerAdapter {
 		if(evt instanceof IdleStateEvent){
             IdleStateEvent e = (IdleStateEvent) evt;
 			if(e.state() == IdleState.READER_IDLE){
+			    logger.info("长时间未接收到消息，关闭channel");
 				ChannelRepository.getInstance().closeChannel(ctx.channel());
 			}else if(e.state() == IdleState.WRITER_IDLE){
 				ByteBuf buff = ctx.alloc().buffer();
                 buff.writeBytes("writetimeout*".getBytes());  
                 ChannelFuture writeAndFlush = ctx.writeAndFlush(buff);
                 if(!writeAndFlush.isSuccess()){
+                    logger.info("长时间未接收到消息，关闭channel");
                     ChannelRepository.getInstance().closeChannel(ctx.channel());
                 }
 			}
