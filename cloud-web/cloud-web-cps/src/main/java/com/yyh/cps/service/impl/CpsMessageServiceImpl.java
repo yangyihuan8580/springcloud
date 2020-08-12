@@ -12,6 +12,7 @@ import com.yyh.cps.mq.MqService;
 import com.yyh.cps.service.CpsMessageService;
 import com.yyh.cps.socket.ChannelRepository;
 import com.yyh.cps.socket.ServerConfig;
+import com.yyh.cps.vo.ParkChannelVO;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
@@ -41,7 +42,7 @@ public class CpsMessageServiceImpl implements CpsMessageService {
         if (!checked) {
             return TcpResult.result(CpsResultCodeEnum.PARAM_ERROR, tcpPushMessage.getCode(), tcpPushMessage.getMsgId());
         }
-        boolean success = cacheService.setNx(CacheKeyPrefix.CHANNEL_HTTP_LOCAL.getPrefix() + tcpPushMessage.getMsgId(), tcpPushMessage.getMsgId(), CacheKeyPrefix.CHANNEL_HTTP_LOCAL.getTime());
+        boolean success = cacheService.setNx(CacheKeyPrefix.CHANNEL_HTTP_LOCK.getPrefix() + tcpPushMessage.getMsgId(), tcpPushMessage.getMsgId(), CacheKeyPrefix.CHANNEL_HTTP_LOCK.getTime());
         if (!success) {
             return TcpResult.result(CpsResultCodeEnum.REQUEST_REPEAT, tcpPushMessage.getCode(), tcpPushMessage.getMsgId());
         }
@@ -56,6 +57,7 @@ public class CpsMessageServiceImpl implements CpsMessageService {
             }
             return TcpResult.result(CpsResultCodeEnum.UNREGISTERED, tcpPushMessage.getCode(), tcpPushMessage.getMsgId());
         }
+        ParkChannelVO channelParkVO = (ParkChannelVO)o;
         FutureRepository.futureMap.put(tcpPushMessage.getMsgId(), new SyncWriteFuture(tcpPushMessage.getMsgId(), tcpPushMessage.getTimeout()));
         Channel channel = ChannelRepository.getInstance().getChannel(parkId);
         if (channel != null) {

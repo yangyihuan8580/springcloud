@@ -5,7 +5,7 @@ public enum CacheKeyPrefix {
     /**  parkId -> channelId */
     CHANNEL_PARK("channel:park:", 60*5),
     CHANNEL_TCP_LOCK("channel:tcp:lock", 2),
-    CHANNEL_HTTP_LOCAL("channel:http:lock", 2),
+    CHANNEL_HTTP_LOCK("channel:http:lock", 2),
     ;
 
     private String prefix;

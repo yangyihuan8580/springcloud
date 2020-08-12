@@ -4,6 +4,8 @@ package com.yyh.cps.socket;
 import com.yyh.cache.cache.constant.CacheKeyPrefix;
 import com.yyh.cache.cache.service.CacheService;
 import com.yyh.common.context.SpringContextUtils;
+import com.yyh.common.util.AddressUtils;
+import com.yyh.cps.vo.ParkChannelVO;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelId;
 import lombok.extern.slf4j.Slf4j;
@@ -85,9 +87,10 @@ public class ChannelRepository {
         channelMap.put(channel.id(), channel);
         parkId2channelIdMap.put(parkId, channel.id());
         channelId2parkIdMap.put(channel.id(), parkId);
+
         /** 放入redis */
-        getCacheService().set(CacheKeyPrefix.CHANNEL_PARK.getPrefix() + parkId, channel.id().asLongText(), CacheKeyPrefix.CHANNEL_PARK.getTime(), TimeUnit.SECONDS);
-        log.info("putChannel::{}", channelId2parkIdMap.get(channel.id()));
+        ParkChannelVO channelParkVO = new ParkChannelVO(channel.id().asLongText(), AddressUtils.localIdentify, parkId);
+        getCacheService().set(CacheKeyPrefix.CHANNEL_PARK.getPrefix() + parkId, channelParkVO, CacheKeyPrefix.CHANNEL_PARK.getTime(), TimeUnit.SECONDS);
         /**  车场状态变更以及后续操作处理  */
     }
 
