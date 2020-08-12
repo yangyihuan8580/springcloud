@@ -27,5 +27,5 @@ public class TcpPushMessage<T> {
     private boolean offline = true;
 
     /** 超时时间，默认6s */
-    private Long timeout = 6L;
+    private long timeout = 6L;
 }
