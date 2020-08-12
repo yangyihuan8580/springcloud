@@ -67,7 +67,6 @@ public class CpsMessageServiceImpl implements CpsMessageService {
         } else {
             return syncWaitStatus(tcpPushMessage, future);
         }
-
     }
 
     private TcpResult syncWaitStatus(TcpPushMessage tcpPushMessage, SyncWriteFuture syncWriteFuture) {
