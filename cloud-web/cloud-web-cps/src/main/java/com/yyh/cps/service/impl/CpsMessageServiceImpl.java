@@ -55,7 +55,7 @@ public class CpsMessageServiceImpl implements CpsMessageService {
         FutureRepository.futureMap.put(tcpPushMessage.getMsgId(), new SyncWriteFuture(tcpPushMessage.getMsgId()));
         Channel channel = ChannelRepository.getInstance().getChannel(parkId);
         if (channel != null) {
-            channel.writeAndFlush(tcpPushMessage.getData() + serverConfig.getDelimiter());
+            channel.writeAndFlush(JSON.toJSONString(tcpPushMessage) + serverConfig.getDelimiter());
 //                    .addListener(new ChannelFutureListener() {
 //                @Override
 //                public void operationComplete(ChannelFuture channelFuture) throws Exception {

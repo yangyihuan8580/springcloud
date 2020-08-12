@@ -49,7 +49,7 @@ public class TextSocketHelper {
                     if (!checked) {
                         logger.info("==========报文格式错误=======");
                         String result = TcpResult.result(CpsResultCodeEnum.PARAM_ERROR, uploadMessage.getCode(), uploadMessage.getMsgId()).toString();
-                        setResult(tcpMessage, result);
+                        //setResult(tcpMessage, result);
                         return;
                     }
                     long time = 2L;
@@ -73,12 +73,13 @@ public class TextSocketHelper {
                     }
                     Class<?> tcpMessageServiceClass = RequestMapping.getClassByCode(uploadMessage.getCode());
                     if (tcpMessageServiceClass == null) {
-                        String result = TcpResult.result(CpsResultCodeEnum.CODE_ERROR, uploadMessage.getCode(), uploadMessage.getMsgId()).toString();
-                        setResult(tcpMessage, result);
+                        logger.info("编码不存在，走默认逻辑====================");
+                        callback(uploadMessage);
                         return;
                     }
                     TcpMessageService tcpMessageService = (TcpMessageService) SpringContextUtils.getBean(tcpMessageServiceClass);
                     if (tcpMessageService == null) {
+                        logger.info("编码不存在，走默认逻辑====================");
                         callback(uploadMessage);
                         return;
                     }
@@ -118,7 +119,7 @@ public class TextSocketHelper {
 
     private void setResult(TcpMessage tcpMessage, String s) {
         logger.info("请求返回报文:{}", s);
-        tcpMessage.getCtx().writeAndFlush(s + serverConfig.getDelimiter());
+//        tcpMessage.getCtx().writeAndFlush(s + serverConfig.getDelimiter());
     }
 
     private boolean checkMessage(UploadMessage uploadMessage) {
