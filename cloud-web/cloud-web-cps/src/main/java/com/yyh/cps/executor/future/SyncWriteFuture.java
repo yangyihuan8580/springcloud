@@ -47,7 +47,7 @@ public class SyncWriteFuture {
     }
 
     public boolean timeout() {
-        return (System.currentTimeMillis() - begin) >= (timeout * 1000);
+        return (System.currentTimeMillis() - begin) >= TimeUnit.SECONDS.toMillis(timeout);
     }
 
 }
