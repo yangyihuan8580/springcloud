@@ -1,28 +1,40 @@
 package com.yyh.cps.executor.future;
 
-import java.sql.Time;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 public class SyncWriteFuture {
 
-    private CountDownLatch latch = new CountDownLatch(1);
+    private CountDownLatch responseLatch = new CountDownLatch(1);
+
+    private CountDownLatch statusLatch = new CountDownLatch(1);
+
     private final long begin = System.currentTimeMillis();
     private long timeout;
     private Object response;
-    private final String requestId;
-    private Throwable cause;
+    /** 发送状态， true 发送成功 false 发送失败 */
+    private boolean status;
+    private final String msgId;
 
-    public SyncWriteFuture(String requestId, long timeout) {
-        this.requestId = requestId;
+    public SyncWriteFuture(String msgId, long timeout) {
+        this.msgId = msgId;
         this.timeout = timeout;
     }
 
+    public void setStatus(boolean status) {
+        this.status = status;
+        statusLatch.countDown();
+    }
 
-    public String requestId() {
-        return requestId;
+    public boolean isStatus(long timeout, TimeUnit unit) throws InterruptedException {
+        if (statusLatch.await(timeout, unit)) {
+            return status;
+        }
+        return false;
+    }
+
+    public String msgId() {
+        return msgId;
     }
 
     public Object response() {
@@ -31,16 +43,11 @@ public class SyncWriteFuture {
 
     public void setResponse(Object response) {
         this.response = response;
-        latch.countDown();
+        responseLatch.countDown();
     }
 
-    public Object get() throws InterruptedException, ExecutionException {
-        latch.await();
-        return response;
-    }
-
-    public Object get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
-        if (latch.await(timeout, unit)) {
+    public Object getResponse(long timeout, TimeUnit unit) throws InterruptedException {
+        if (responseLatch.await(timeout, unit)) {
             return response;
         }
         return null;

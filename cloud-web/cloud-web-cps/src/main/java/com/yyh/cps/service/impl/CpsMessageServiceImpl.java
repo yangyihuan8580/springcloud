@@ -19,6 +19,7 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -58,28 +59,42 @@ public class CpsMessageServiceImpl implements CpsMessageService {
             }
             return TcpResult.result(CpsResultCodeEnum.UNREGISTERED, tcpPushMessage.getCode(), tcpPushMessage.getMsgId());
         }
-        ParkChannelVO channelParkVO = (ParkChannelVO)o;
-        FutureRepository.futureMap.put(tcpPushMessage.getMsgId(), new SyncWriteFuture(tcpPushMessage.getMsgId(), tcpPushMessage.getTimeout()));
-        Channel channel = ChannelRepository.getInstance().getChannel(parkId);
-        if (channel != null) {
-            channel.writeAndFlush(JSON.toJSONString(tcpPushMessage) + serverConfig.getDelimiter())
-                    .addListener(new ChannelFutureListener() {
-                @Override
-                public void operationComplete(ChannelFuture channelFuture) throws Exception {
-                    if (channelFuture.isSuccess()) {
-                        log.info("消息发送成功");
-                    } else {
-                        log.warn("消息发送失败", channelFuture.cause());
-                    }
-                }
-            });
+
+        SyncWriteFuture future = pushMessageToPark(tcpPushMessage);
+
+        if (tcpPushMessage.isSync()) {
+            return syncWaitResponse(tcpPushMessage, future);
         } else {
-//            mqService.sendMsg()
+            return syncWaitStatus(tcpPushMessage, future);
         }
+
+    }
+
+    private TcpResult syncWaitStatus(TcpPushMessage tcpPushMessage, SyncWriteFuture syncWriteFuture) {
         TcpResult tcpResult;
-        SyncWriteFuture syncWriteFuture = FutureRepository.futureMap.get(tcpPushMessage.getMsgId());
         try {
-            Object o1 = syncWriteFuture.get(tcpPushMessage.getTimeout(), TimeUnit.SECONDS);
+            boolean status = syncWriteFuture.isStatus(tcpPushMessage.getTimeout(), TimeUnit.SECONDS);
+            if (syncWriteFuture.timeout()) {
+                tcpResult = TcpResult.result(CpsResultCodeEnum.REQUEST_TIMEOUT, tcpPushMessage.getCode(), tcpPushMessage.getMsgId());
+            } else if (status){
+                tcpResult = TcpResult.success(tcpPushMessage.getCode(), tcpPushMessage.getMsgId());
+            } else {
+                tcpResult = TcpResult.error(tcpPushMessage.getCode(), tcpPushMessage.getMsgId());
+            }
+        } catch (Exception e) {
+            log.error("下发数据异常" + e.getMessage(), e);
+            tcpResult = TcpResult.error(tcpPushMessage.getCode(), tcpPushMessage.getMsgId());
+        } finally {
+            FutureRepository.futureMap.remove(tcpPushMessage.getMsgId());
+        }
+        return tcpResult;
+    }
+
+    @NotNull
+    private TcpResult syncWaitResponse(TcpPushMessage tcpPushMessage, SyncWriteFuture syncWriteFuture) {
+        TcpResult tcpResult;
+        try {
+            Object o1 = syncWriteFuture.getResponse(tcpPushMessage.getTimeout(), TimeUnit.SECONDS);
             if (syncWriteFuture.timeout()) {
                 tcpResult = TcpResult.result(CpsResultCodeEnum.REQUEST_TIMEOUT, tcpPushMessage.getCode(), tcpPushMessage.getMsgId());
             } else {
@@ -92,6 +107,31 @@ public class CpsMessageServiceImpl implements CpsMessageService {
             FutureRepository.futureMap.remove(tcpPushMessage.getMsgId());
         }
         return tcpResult;
+    }
+
+    @NotNull
+    private SyncWriteFuture pushMessageToPark(TcpPushMessage tcpPushMessage) {
+        SyncWriteFuture future = new SyncWriteFuture(tcpPushMessage.getMsgId(), tcpPushMessage.getTimeout());
+        FutureRepository.futureMap.put(tcpPushMessage.getMsgId(), future);
+        Channel channel = ChannelRepository.getInstance().getChannel(tcpPushMessage.getParkId());
+        if (channel != null) {
+            channel.writeAndFlush(JSON.toJSONString(tcpPushMessage) + serverConfig.getDelimiter())
+                    .addListener(new ChannelFutureListener() {
+                @Override
+                public void operationComplete(ChannelFuture channelFuture) throws Exception {
+                    if (channelFuture.isSuccess()) {
+                        log.info("消息发送成功");
+                        future.setStatus(true);
+                    } else {
+                        log.warn("消息发送失败", channelFuture.cause());
+                        future.setStatus(false);
+                    }
+                }
+            });
+        } else {
+//            mqService.sendMsg()
+        }
+        return future;
     }
 
     private boolean checkMessage(TcpPushMessage tcpPushMessage) {
