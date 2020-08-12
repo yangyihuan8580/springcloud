@@ -7,6 +7,8 @@ public enum CpsResultCodeEnum {
     PARAM_ERROR("1001", "报文格式错误"),
     UNREGISTERED("1002", "车场不在线"),
     CODE_ERROR("1003", "请求编码错误"),
+    REQUEST_REPEAT("1004", "重复请求"),
+    REQUEST_TIMEOUT("1005", "请求超时"),
 
     ;
 

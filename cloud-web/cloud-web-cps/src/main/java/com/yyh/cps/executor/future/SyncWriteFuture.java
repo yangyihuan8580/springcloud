@@ -1,5 +1,6 @@
 package com.yyh.cps.executor.future;
 
+import java.sql.Time;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -14,8 +15,9 @@ public class SyncWriteFuture {
     private final String requestId;
     private Throwable cause;
 
-    public SyncWriteFuture(String requestId) {
+    public SyncWriteFuture(String requestId, long timeout) {
         this.requestId = requestId;
+        this.timeout = timeout;
     }
 
 
@@ -42,6 +44,10 @@ public class SyncWriteFuture {
             return response;
         }
         return null;
+    }
+
+    public boolean timeout() {
+        return (System.currentTimeMillis() - begin) >= (timeout * 1000);
     }
 
 }

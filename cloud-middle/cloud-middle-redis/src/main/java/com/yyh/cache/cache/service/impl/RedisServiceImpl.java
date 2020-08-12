@@ -163,8 +163,7 @@ public class RedisServiceImpl implements CacheService {
     public boolean setNx(String key, Object value, long time) {
         try {
             if (time > 0) {
-                redisTemplate.opsForValue().setIfAbsent(key, value, time, TimeUnit.SECONDS);
-                return true;
+                return redisTemplate.opsForValue().setIfAbsent(key, value, time, TimeUnit.SECONDS);
             } else {
                 return false;
             }
@@ -178,8 +177,7 @@ public class RedisServiceImpl implements CacheService {
     public boolean setNx(String key, Object value, long time, TimeUnit timeUnit) {
         try {
             if (time > 0) {
-                redisTemplate.opsForValue().setIfAbsent(key, value, time, timeUnit);
-                return true;
+                return redisTemplate.opsForValue().setIfAbsent(key, value, time, timeUnit);
             } else {
                 return false;
             }

@@ -39,7 +39,11 @@ public class CpsMessageServiceImpl implements CpsMessageService {
     public TcpResult sendMessage(TcpPushMessage tcpPushMessage) {
         boolean checked = checkMessage(tcpPushMessage);
         if (!checked) {
-            return TcpResult.error(tcpPushMessage.getCode(), tcpPushMessage.getMsgId());
+            return TcpResult.result(CpsResultCodeEnum.PARAM_ERROR, tcpPushMessage.getCode(), tcpPushMessage.getMsgId());
+        }
+        boolean success = cacheService.setNx(CacheKeyPrefix.CHANNEL_HTTP_LOCAL.getPrefix() + tcpPushMessage.getMsgId(), tcpPushMessage.getMsgId(), CacheKeyPrefix.CHANNEL_HTTP_LOCAL.getTime());
+        if (!success) {
+            return TcpResult.result(CpsResultCodeEnum.REQUEST_REPEAT, tcpPushMessage.getCode(), tcpPushMessage.getMsgId());
         }
         String parkId = tcpPushMessage.getParkId();
         /** 判断车场是否在线 */
@@ -52,21 +56,20 @@ public class CpsMessageServiceImpl implements CpsMessageService {
             }
             return TcpResult.result(CpsResultCodeEnum.UNREGISTERED, tcpPushMessage.getCode(), tcpPushMessage.getMsgId());
         }
-        FutureRepository.futureMap.put(tcpPushMessage.getMsgId(), new SyncWriteFuture(tcpPushMessage.getMsgId()));
+        FutureRepository.futureMap.put(tcpPushMessage.getMsgId(), new SyncWriteFuture(tcpPushMessage.getMsgId(), tcpPushMessage.getTimeout()));
         Channel channel = ChannelRepository.getInstance().getChannel(parkId);
         if (channel != null) {
-            channel.writeAndFlush(JSON.toJSONString(tcpPushMessage) + serverConfig.getDelimiter());
-//                    .addListener(new ChannelFutureListener() {
-//                @Override
-//                public void operationComplete(ChannelFuture channelFuture) throws Exception {
-//                    if (channelFuture.isSuccess()) {
-//                        log.info("消息发送成功");
-//                    } else {
-//                        log.warn("消息发送失败", channelFuture.cause());
-//
-//                    }
-//                }
-//            });
+            channel.writeAndFlush(JSON.toJSONString(tcpPushMessage) + serverConfig.getDelimiter())
+                    .addListener(new ChannelFutureListener() {
+                @Override
+                public void operationComplete(ChannelFuture channelFuture) throws Exception {
+                    if (channelFuture.isSuccess()) {
+                        log.info("消息发送成功");
+                    } else {
+                        log.warn("消息发送失败", channelFuture.cause());
+                    }
+                }
+            });
         } else {
 //            mqService.sendMsg()
         }
@@ -74,7 +77,11 @@ public class CpsMessageServiceImpl implements CpsMessageService {
         SyncWriteFuture syncWriteFuture = FutureRepository.futureMap.get(tcpPushMessage.getMsgId());
         try {
             Object o1 = syncWriteFuture.get(tcpPushMessage.getTimeout(), TimeUnit.SECONDS);
-            tcpResult = TcpResult.success(o1, tcpPushMessage.getCode(), tcpPushMessage.getMsgId());
+            if (syncWriteFuture.timeout()) {
+                tcpResult = TcpResult.result(CpsResultCodeEnum.REQUEST_TIMEOUT, tcpPushMessage.getCode(), tcpPushMessage.getMsgId());
+            } else {
+                tcpResult = TcpResult.success(o1, tcpPushMessage.getCode(), tcpPushMessage.getMsgId());
+            }
         } catch (Exception e) {
             log.error("下发数据异常" + e.getMessage(), e);
             tcpResult = TcpResult.error(tcpPushMessage.getCode(), tcpPushMessage.getMsgId());

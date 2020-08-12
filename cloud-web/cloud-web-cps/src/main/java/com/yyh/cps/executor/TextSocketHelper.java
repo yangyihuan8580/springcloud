@@ -1,5 +1,6 @@
 package com.yyh.cps.executor;
 
+import com.yyh.cache.cache.constant.CacheKeyPrefix;
 import com.yyh.cache.cache.service.CacheService;
 import com.yyh.common.context.SpringContextUtils;
 import com.yyh.cps.constant.CpsApiConstant;
@@ -52,10 +53,9 @@ public class TextSocketHelper {
                         //setResult(tcpMessage, result);
                         return;
                     }
-                    long time = 2L;
-                    boolean success = cacheService.setNx(uploadMessage.getMsgId(), System.currentTimeMillis(), time);
+                    boolean success = cacheService.setNx(CacheKeyPrefix.CHANNEL_TCP_LOCK.getPrefix() + uploadMessage.getMsgId(), System.currentTimeMillis(), CacheKeyPrefix.CHANNEL_TCP_LOCK.getTime());
                     if (!success) {
-                        logger.info("{}秒,接收到重复数据，数据丢弃", time);
+                        logger.info("{}秒,接收到重复数据，数据丢弃", CacheKeyPrefix.CHANNEL_TCP_LOCK.getTime());
                         return;
                     }
                     /**  判断车场是否注册 */
