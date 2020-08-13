@@ -5,6 +5,7 @@ import com.yyh.cache.cache.constant.CacheKeyPrefix;
 import com.yyh.cache.cache.service.CacheService;
 import com.yyh.common.util.AddressUtils;
 import com.yyh.cps.constant.CpsResultCodeEnum;
+import com.yyh.cps.constant.FailConstant;
 import com.yyh.cps.entity.TcpPushMessage;
 import com.yyh.cps.executor.TcpResult;
 import com.yyh.cps.executor.future.FutureRepository;
@@ -55,13 +56,12 @@ public class CpsMessageServiceImpl implements CpsMessageService {
             log.info("sendMessage,车场不在线,parkId:{}");
             if (tcpPushMessage.isOffline()) {
                 log.info("sendMessage,数据需要存储");
-                // TODO
+                saveFailMessage(tcpPushMessage, FailConstant.PARK_OFFLINE);
             }
             return TcpResult.result(CpsResultCodeEnum.UNREGISTERED, tcpPushMessage.getCode(), tcpPushMessage.getMsgId());
         }
 
         SyncWriteFuture future = pushMessageToPark(tcpPushMessage);
-
         if (tcpPushMessage.isSync()) {
             return syncWaitResponse(tcpPushMessage, future);
         } else {
@@ -79,6 +79,7 @@ public class CpsMessageServiceImpl implements CpsMessageService {
                 tcpResult = TcpResult.success(tcpPushMessage.getCode(), tcpPushMessage.getMsgId());
             } else {
                 tcpResult = TcpResult.error(tcpPushMessage.getCode(), tcpPushMessage.getMsgId());
+
             }
         } catch (Exception e) {
             log.error("下发数据异常" + e.getMessage(), e);
@@ -96,12 +97,14 @@ public class CpsMessageServiceImpl implements CpsMessageService {
             Object o1 = syncWriteFuture.getResponse(tcpPushMessage.getTimeout(), TimeUnit.SECONDS);
             if (syncWriteFuture.timeout()) {
                 tcpResult = TcpResult.result(CpsResultCodeEnum.REQUEST_TIMEOUT, tcpPushMessage.getCode(), tcpPushMessage.getMsgId());
+                saveFailMessage(tcpPushMessage, FailConstant.PUSH_TIMEOUT);
             } else {
                 tcpResult = TcpResult.success(o1, tcpPushMessage.getCode(), tcpPushMessage.getMsgId());
             }
         } catch (Exception e) {
             log.error("下发数据异常" + e.getMessage(), e);
             tcpResult = TcpResult.error(tcpPushMessage.getCode(), tcpPushMessage.getMsgId());
+            saveFailMessage(tcpPushMessage, FailConstant.PUSH_ERROR);
         } finally {
             FutureRepository.futureMap.remove(tcpPushMessage.getMsgId());
         }
@@ -128,5 +131,10 @@ public class CpsMessageServiceImpl implements CpsMessageService {
             return false;
         }
         return true;
+    }
+
+
+    private void saveFailMessage(TcpPushMessage message, int offline) {
+
     }
 }
