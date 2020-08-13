@@ -8,7 +8,7 @@ public class TcpPushMessage<T> {
     /** 消息的标识 */
     private String msgId;
 
-    /** 对应的停车编码 */
+    /** 对应的请求编码 */
     private String code;
 
     /** 车场Id */

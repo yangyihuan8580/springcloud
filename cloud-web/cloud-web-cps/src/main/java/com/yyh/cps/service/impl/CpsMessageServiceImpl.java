@@ -1,9 +1,7 @@
 package com.yyh.cps.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.yyh.cache.cache.constant.CacheKeyPrefix;
 import com.yyh.cache.cache.service.CacheService;
-import com.yyh.common.util.AddressUtils;
 import com.yyh.cps.constant.CpsResultCodeEnum;
 import com.yyh.cps.constant.FailConstant;
 import com.yyh.cps.entity.TcpPushMessage;
@@ -14,10 +12,6 @@ import com.yyh.cps.mq.MqService;
 import com.yyh.cps.service.CpsMessageService;
 import com.yyh.cps.socket.ChannelRepository;
 import com.yyh.cps.socket.ServerConfig;
-import com.yyh.cps.vo.ParkChannelVO;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelFutureListener;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -32,9 +26,6 @@ public class CpsMessageServiceImpl implements CpsMessageService {
 
     @Autowired
     private CacheService cacheService;
-
-    @Autowired
-    private ServerConfig serverConfig;
 
     @Autowired
     private MqService mqService;
