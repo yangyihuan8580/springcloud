@@ -18,7 +18,7 @@ public class TcpPushMessage<T> {
     private T data;
 
     /** 是否同步返回 */
-    private boolean sync = false;
+    private boolean sync = true;
 
     /** 推送失败，是否需要重复推送 */
     private boolean repeat = true;

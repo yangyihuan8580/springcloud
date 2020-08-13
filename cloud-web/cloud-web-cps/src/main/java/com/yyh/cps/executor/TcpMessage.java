@@ -20,8 +20,8 @@ public class TcpMessage {
 
     private String message;
 
-    public UploadMessage parseData() {
-        UploadMessage uploadMessage = JSON.parseObject(message,new TypeReference<UploadMessage<?>>() {});
+    public TcpUploadMessage parseData() {
+        TcpUploadMessage uploadMessage = JSON.parseObject(message,new TypeReference<TcpUploadMessage<?>>() {});
         if (StringUtils.isNotEmpty(parkId)) {
             uploadMessage.setParkId(parkId);
         }

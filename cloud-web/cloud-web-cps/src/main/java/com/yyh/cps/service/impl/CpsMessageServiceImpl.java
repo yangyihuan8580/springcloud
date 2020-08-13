@@ -110,23 +110,9 @@ public class CpsMessageServiceImpl implements CpsMessageService {
 
     @NotNull
     private SyncWriteFuture pushMessageToPark(TcpPushMessage tcpPushMessage) {
-        SyncWriteFuture future = new SyncWriteFuture(tcpPushMessage.getMsgId(), tcpPushMessage.getTimeout());
-        FutureRepository.futureMap.put(tcpPushMessage.getMsgId(), future);
-        Channel channel = ChannelRepository.getInstance().getChannel(tcpPushMessage.getParkId());
-        if (channel != null) {
-            channel.writeAndFlush(JSON.toJSONString(tcpPushMessage) + serverConfig.getDelimiter())
-                    .addListener(new ChannelFutureListener() {
-                @Override
-                public void operationComplete(ChannelFuture channelFuture) throws Exception {
-                    if (channelFuture.isSuccess()) {
-                        log.info("消息发送成功");
-                        future.setStatus(true);
-                    } else {
-                        log.warn("消息发送失败", channelFuture.cause());
-                        future.setStatus(false);
-                    }
-                }
-            });
+        SyncWriteFuture future = FutureRepository.createFuture(tcpPushMessage.getMsgId(), tcpPushMessage.getTimeout());
+        if (ChannelRepository.getInstance().getChannel(tcpPushMessage.getParkId()) != null) {
+            ChannelRepository.getInstance().sendMessageToPark(tcpPushMessage, future);
         } else {
 //            mqService.sendMsg()
         }

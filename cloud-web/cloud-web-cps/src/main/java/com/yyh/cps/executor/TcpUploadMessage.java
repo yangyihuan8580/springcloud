@@ -4,7 +4,7 @@ import io.netty.channel.ChannelHandlerContext;
 import lombok.Data;
 
 @Data
-public class UploadMessage<T> {
+public class TcpUploadMessage<T> {
 
     /** 请求的唯一标识 */
     private String msgId;

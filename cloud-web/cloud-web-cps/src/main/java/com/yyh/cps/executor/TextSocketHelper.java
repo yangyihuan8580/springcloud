@@ -45,7 +45,7 @@ public class TextSocketHelper {
             public void run() {
                 try {
                     logger.info("开始处理tcp消息,message:{},parkId:{}", tcpMessage.getMessage(), tcpMessage.getParkId());
-                    UploadMessage uploadMessage = tcpMessage.parseData();
+                    TcpUploadMessage uploadMessage = tcpMessage.parseData();
                     boolean checked = checkMessage(uploadMessage);
                     if (!checked) {
                         logger.info("==========报文格式错误=======");
@@ -107,7 +107,7 @@ public class TextSocketHelper {
         });
     }
 
-    private void callback(UploadMessage uploadMessage) {
+    private void callback(TcpUploadMessage uploadMessage) {
         SyncWriteFuture syncWriteFuture = FutureRepository.futureMap.get(uploadMessage.getMsgId());
         logger.info("syncWriteFuture :"+ syncWriteFuture);
         if (syncWriteFuture != null) {
@@ -117,7 +117,7 @@ public class TextSocketHelper {
         }
     }
 
-    private void setResult(UploadMessage message, String s) {
+    private void setResult(TcpUploadMessage message, String s) {
         logger.info("请求返回报文:{}", s);
         /** 心跳请求不返回 */
         if (!message.getCode().equals(CpsApiConstant.CPS_002)) {
@@ -125,7 +125,7 @@ public class TextSocketHelper {
         }
     }
 
-    private boolean checkMessage(UploadMessage uploadMessage) {
+    private boolean checkMessage(TcpUploadMessage uploadMessage) {
         if (uploadMessage == null
                 || StringUtils.isEmpty(uploadMessage.getCode())
                 || StringUtils.isEmpty(uploadMessage.getMsgId())
