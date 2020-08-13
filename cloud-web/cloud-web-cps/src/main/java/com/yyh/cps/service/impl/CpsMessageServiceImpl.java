@@ -134,7 +134,7 @@ public class CpsMessageServiceImpl implements CpsMessageService {
     }
 
 
-    private void saveFailMessage(TcpPushMessage message, int offline) {
+    private void saveFailMessage(TcpPushMessage message, int failType) {
 
     }
 }
