@@ -129,7 +129,8 @@ public class ChannelRepository {
         /** 放入redis */
         ParkChannelVO channelParkVO = new ParkChannelVO(channel.id().asLongText(), AddressUtils.localIdentify, parkId);
         getCacheService().set(CacheKeyPrefix.CHANNEL_PARK.getPrefix() + parkId, channelParkVO, CacheKeyPrefix.CHANNEL_PARK.getTime(), TimeUnit.SECONDS);
-        /**  车场状态变更以及后续操作处理  */
+        /**  车场上线以及后续操作处理  */
+
     }
 
     /** 通道信息更新 */
