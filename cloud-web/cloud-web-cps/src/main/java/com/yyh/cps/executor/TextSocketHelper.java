@@ -50,7 +50,7 @@ public class TextSocketHelper {
                     if (!checked) {
                         logger.info("==========报文格式错误=======");
                         String result = TcpResult.result(CpsResultCodeEnum.PARAM_ERROR, uploadMessage.getCode(), uploadMessage.getMsgId()).toString();
-                        //setResult(tcpMessage, result);
+                        //setResult(uploadMessage, result);
                         return;
                     }
                     boolean success = cacheService.setNx(CacheKeyPrefix.CHANNEL_TCP_LOCK.getPrefix() + uploadMessage.getMsgId(), System.currentTimeMillis(), CacheKeyPrefix.CHANNEL_TCP_LOCK.getTime());
@@ -64,10 +64,10 @@ public class TextSocketHelper {
                         if (channel == null) {
                             logger.info("==========车场未注册=======");
                             String result = TcpResult.result(CpsResultCodeEnum.UNREGISTERED, uploadMessage.getCode(), uploadMessage.getMsgId()).toString();
-                            setResult(tcpMessage, result);
+                            setResult(uploadMessage, result);
                             return;
                         } else {
-                            /** 更新车场token信息 */
+                            /** 更新车场缓存信息 */
                             ChannelRepository.getInstance().updateChannelInfo(channel, uploadMessage.getParkId());
                         }
                     }
@@ -97,7 +97,7 @@ public class TextSocketHelper {
                         result = TcpResult.success(uploadMessage.getCode(), uploadMessage.getMsgId()).toString();
                     }
                     if (tcpResult != null) {
-                        setResult(tcpMessage, result);
+                        setResult(uploadMessage, result);
                     }
                 } catch (Exception e) {
                     logger.error("tcp上行消息处理异常:"+ e.getMessage(), e);
@@ -117,9 +117,12 @@ public class TextSocketHelper {
         }
     }
 
-    private void setResult(TcpMessage tcpMessage, String s) {
+    private void setResult(UploadMessage message, String s) {
         logger.info("请求返回报文:{}", s);
-//        tcpMessage.getCtx().writeAndFlush(s + serverConfig.getDelimiter());
+        /** 心跳请求不返回 */
+        if (!message.getCode().equals(CpsApiConstant.CPS_002)) {
+//            message.getCtx().writeAndFlush(s + serverConfig.getDelimiter());
+        }
     }
 
     private boolean checkMessage(UploadMessage uploadMessage) {

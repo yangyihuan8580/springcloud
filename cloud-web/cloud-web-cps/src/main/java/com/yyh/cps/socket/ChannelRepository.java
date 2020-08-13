@@ -100,6 +100,7 @@ public class ChannelRepository {
             return;
         }
         getCacheService().expire(CacheKeyPrefix.CHANNEL_PARK.getPrefix() + parkId, CacheKeyPrefix.CHANNEL_PARK.getTime(), TimeUnit.SECONDS);
+
     }
 
     public void closeChannel(Channel channel) {
