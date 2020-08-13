@@ -17,9 +17,11 @@ public class ParkRegisterRequest implements TcpMessageService {
     private static Logger logger = LoggerFactory.getLogger(TcpMessageService.class);
 
     @Override
-    public TcpResult execute(UploadMessage tcpMessage) throws RuntimeException {
-        logger.info("车场信息注册:{}", JSON.toJSONString(tcpMessage));
-        ChannelRepository.getInstance().putChannel(tcpMessage.getParkId(), tcpMessage.getCtx().channel());
-        return TcpResult.success(tcpMessage.getCode(), tcpMessage.getMsgId());
+    public TcpResult execute(UploadMessage uploadMessage) throws RuntimeException {
+        logger.info("车场信息注册:{}", JSON.toJSONString(uploadMessage));
+        ChannelRepository.getInstance().putChannel(uploadMessage.getParkId(), uploadMessage.getCtx().channel());
+
+
+        return TcpResult.success(uploadMessage.getCode(), uploadMessage.getMsgId());
     }
 }

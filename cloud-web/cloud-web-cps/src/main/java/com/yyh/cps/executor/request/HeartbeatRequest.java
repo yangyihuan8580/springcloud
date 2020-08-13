@@ -12,9 +12,10 @@ import lombok.extern.slf4j.Slf4j;
 public class HeartbeatRequest implements TcpMessageService {
 
     @Override
-    public TcpResult execute(UploadMessage tcpMessage) throws RuntimeException {
+    public TcpResult execute(UploadMessage uploadMessage) throws RuntimeException {
         log.info("接收到心跳请求============");
-        ChannelRepository.getInstance().updateChannelInfo(tcpMessage.getCtx().channel(), tcpMessage.getParkId());
-        return TcpResult.success(tcpMessage.getCode(), tcpMessage.getMsgId());
+        ChannelRepository.getInstance().updateChannelInfo(uploadMessage.getCtx().channel(), uploadMessage.getParkId());
+
+        return TcpResult.success(uploadMessage.getCode(), uploadMessage.getMsgId());
     }
 }
