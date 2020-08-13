@@ -107,12 +107,13 @@ public class ChannelRepository {
         if (channel == null) {
             return;
         }
-        log.info("channel open: {}", channel.isOpen());
+
         if (!channel.isOpen()) {
             channel.close();
         }
-        channelMap.remove(channel);
         String parkId = channelId2parkIdMap.remove(channel.id());
+        log.info("channel close, parkId:{}", parkId);
+        channelMap.remove(channel);
         if (StringUtils.isNotEmpty(parkId)) {
             parkId2channelIdMap.remove(parkId);
         }
