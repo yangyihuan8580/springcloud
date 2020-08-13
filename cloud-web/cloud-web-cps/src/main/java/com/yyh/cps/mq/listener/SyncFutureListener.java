@@ -1,7 +1,7 @@
 package com.yyh.cps.mq.listener;
 
 import com.alibaba.fastjson.JSON;
-import com.yyh.cps.executor.UploadMessage;
+import com.yyh.cps.executor.TcpUploadMessage;
 import com.yyh.cps.executor.future.FutureRepository;
 import com.yyh.cps.executor.future.SyncWriteFuture;
 import lombok.extern.slf4j.Slf4j;
@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class SyncFutureListener {
 
-    public void consume(UploadMessage uploadMessage) {
+    public void consume(TcpUploadMessage uploadMessage) {
         log.info("接收到MS上传的消息, message:", JSON.toJSONString(uploadMessage));
         String msgId = uploadMessage.getMsgId();
         SyncWriteFuture future = FutureRepository.futureMap.get(msgId);
