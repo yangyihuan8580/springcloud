@@ -1,5 +1,6 @@
 package com.yyh.common.base;
 
+import com.alibaba.fastjson.JSON;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -99,5 +100,9 @@ public class Result<T> implements Serializable {
 
     public void setData(T data) {
         this.data = data;
+    }
+
+    public String toString() {
+        return JSON.toJSONString(this);
     }
 }

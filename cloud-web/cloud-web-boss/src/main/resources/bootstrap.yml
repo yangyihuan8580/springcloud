@@ -1,5 +1,5 @@
 server:
-  port: 8763
+  port: 8766
   #tomcat 参数配置
   tomcat:
     accept-count: 100
