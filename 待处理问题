@@ -1,8 +1,0 @@
-1.feign 首次调用慢
-    原因： 连接时，不会触发初始化，只有在首次调用时才会触发。
-    解决方案： https://blog.csdn.net/qq83833224/article/details/86680664
-
-2.eureka平滑升级
-
-
-3.sleuth 整合 ELK
